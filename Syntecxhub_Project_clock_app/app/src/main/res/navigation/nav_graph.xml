@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/clockFragment">
+
+    <fragment
+        android:id="@+id/clockFragment"
+        android:name="com.syntec.clockapp.ui.ClockFragment"
+        android:label="Clock" />
+
+    <fragment
+        android:id="@+id/worldClockFragment"
+        android:name="com.syntec.clockapp.ui.WorldClockFragment"
+        android:label="World" />
+
+    <fragment
+        android:id="@+id/pomodoroFragment"
+        android:name="com.syntec.clockapp.ui.PomodoroFragment"
+        android:label="Focus" />
+
+    <fragment
+        android:id="@+id/stopwatchFragment"
+        android:name="com.syntec.clockapp.ui.StopwatchFragment"
+        android:label="Stopwatch" />
+
+</navigation>

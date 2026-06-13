@@ -1,0 +1,182 @@
+/* ══════════════════════════════════════════════════════════════════════
+   NEXUS  —  Design Tokens  (foundations layer)
+   Every value used across the system is defined exactly once here.
+   ══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Brand palette ────────────────────────────────────────────────── */
+  --clr-primary-50:  #eef2ff;
+  --clr-primary-100: #e0e7ff;
+  --clr-primary-200: #c7d2fe;
+  --clr-primary-300: #a5b4fc;
+  --clr-primary-400: #818cf8;
+  --clr-primary-500: #6366f1;   /* primary */
+  --clr-primary-600: #4f46e5;   /* primary-dark (hover) */
+  --clr-primary-700: #4338ca;
+  --clr-primary-800: #3730a3;
+  --clr-primary-900: #312e81;
+
+  --clr-accent-400:  #f472b6;
+  --clr-accent-500:  #ec4899;   /* accent / secondary */
+  --clr-accent-600:  #db2777;
+
+  /* ── Neutral grays ────────────────────────────────────────────────── */
+  --clr-neutral-0:   #ffffff;
+  --clr-neutral-50:  #f8fafc;
+  --clr-neutral-100: #f1f5f9;
+  --clr-neutral-200: #e2e8f0;
+  --clr-neutral-300: #cbd5e1;
+  --clr-neutral-400: #94a3b8;
+  --clr-neutral-500: #64748b;
+  --clr-neutral-600: #475569;
+  --clr-neutral-700: #334155;
+  --clr-neutral-800: #1e293b;
+  --clr-neutral-900: #0f172a;
+  --clr-neutral-950: #020617;
+
+  /* ── Semantic ─────────────────────────────────────────────────────── */
+  --clr-success-50:  #f0fdf4;
+  --clr-success-500: #22c55e;
+  --clr-success-600: #16a34a;
+  --clr-error-50:    #fef2f2;
+  --clr-error-500:   #ef4444;
+  --clr-error-600:   #dc2626;
+  --clr-warning-50:  #fffbeb;
+  --clr-warning-500: #f59e0b;
+  --clr-warning-600: #d97706;
+
+  /* ── Alias tokens (what the components actually use) ─────────────── */
+  --color-bg:           var(--clr-neutral-0);
+  --color-bg-subtle:    var(--clr-neutral-50);
+  --color-bg-muted:     var(--clr-neutral-100);
+  --color-surface:      var(--clr-neutral-0);
+  --color-surface-raised: var(--clr-neutral-0);
+  --color-border:       var(--clr-neutral-200);
+  --color-border-strong: var(--clr-neutral-300);
+
+  --color-text-primary: var(--clr-neutral-900);
+  --color-text-secondary: var(--clr-neutral-600);
+  --color-text-tertiary: var(--clr-neutral-400);
+  --color-text-inverse: var(--clr-neutral-0);
+  --color-text-brand:   var(--clr-primary-600);
+  --color-text-accent:  var(--clr-accent-500);
+
+  --color-brand:        var(--clr-primary-500);
+  --color-brand-dark:   var(--clr-primary-600);
+  --color-brand-light:  var(--clr-primary-100);
+  --color-accent:       var(--clr-accent-500);
+  --color-accent-dark:  var(--clr-accent-600);
+
+  /* ── Typography scale ─────────────────────────────────────────────── */
+  --font-sans:  'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:  'JetBrains Mono', 'Fira Code', monospace;
+
+  --text-xs:    0.75rem;   /* 12px */
+  --text-sm:    0.875rem;  /* 14px */
+  --text-base:  1rem;      /* 16px */
+  --text-lg:    1.125rem;  /* 18px */
+  --text-xl:    1.25rem;   /* 20px */
+  --text-2xl:   1.5rem;    /* 24px */
+  --text-3xl:   1.875rem;  /* 30px */
+  --text-4xl:   2.25rem;   /* 36px */
+  --text-5xl:   3rem;      /* 48px */
+  --text-6xl:   3.75rem;   /* 60px */
+  --text-7xl:   4.5rem;    /* 72px */
+
+  --leading-none:    1;
+  --leading-tight:   1.2;
+  --leading-snug:    1.375;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold:600;
+  --weight-bold:    700;
+  --weight-extrabold:800;
+
+  /* ── Spacing (8px grid) ───────────────────────────────────────────── */
+  --sp-1:   0.25rem;   /*  4px */
+  --sp-2:   0.5rem;    /*  8px */
+  --sp-3:   0.75rem;   /* 12px */
+  --sp-4:   1rem;      /* 16px */
+  --sp-5:   1.25rem;   /* 20px */
+  --sp-6:   1.5rem;    /* 24px */
+  --sp-8:   2rem;      /* 32px */
+  --sp-10:  2.5rem;    /* 40px */
+  --sp-12:  3rem;      /* 48px */
+  --sp-16:  4rem;      /* 64px */
+  --sp-20:  5rem;      /* 80px */
+  --sp-24:  6rem;      /* 96px */
+  --sp-32:  8rem;      /* 128px */
+
+  /* ── Border radius ────────────────────────────────────────────────── */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-3xl:  32px;
+  --radius-pill: 999px;
+  --radius-full: 50%;
+
+  /* ── Shadows ──────────────────────────────────────────────────────── */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.05);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.10), 0 4px 8px rgba(0,0,0,.06);
+  --shadow-xl: 0 20px 48px rgba(0,0,0,.12), 0 8px 16px rgba(0,0,0,.07);
+  --shadow-brand: 0 8px 32px rgba(99,102,241,.30);
+  --shadow-accent: 0 8px 32px rgba(236,72,153,.25);
+  --shadow-inset: inset 0 2px 4px rgba(0,0,0,.06);
+
+  /* ── Motion ───────────────────────────────────────────────────────── */
+  --ease-in:    cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:   cubic-bezier(0, 0, 0.2, 1);
+  --ease-inout: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-fast:   120ms;
+  --duration-normal: 200ms;
+  --duration-slow:   320ms;
+  --duration-slower: 480ms;
+
+  /* ── Layout ───────────────────────────────────────────────────────── */
+  --container-sm:  640px;
+  --container-md:  768px;
+  --container-lg:  1024px;
+  --container-xl:  1280px;
+  --container-2xl: 1440px;
+
+  /* ── Z-index scale ────────────────────────────────────────────────── */
+  --z-base:    0;
+  --z-raised:  10;
+  --z-sticky:  100;
+  --z-overlay: 200;
+  --z-modal:   300;
+  --z-toast:   400;
+}
+
+/* ── Dark mode token overrides ──────────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-bg:             var(--clr-neutral-950);
+  --color-bg-subtle:      var(--clr-neutral-900);
+  --color-bg-muted:       var(--clr-neutral-800);
+  --color-surface:        var(--clr-neutral-900);
+  --color-surface-raised: var(--clr-neutral-800);
+  --color-border:         var(--clr-neutral-800);
+  --color-border-strong:  var(--clr-neutral-700);
+
+  --color-text-primary:   var(--clr-neutral-50);
+  --color-text-secondary: var(--clr-neutral-400);
+  --color-text-tertiary:  var(--clr-neutral-600);
+  --color-text-brand:     var(--clr-primary-400);
+  --color-text-accent:    var(--clr-accent-400);
+
+  --color-brand-light:    rgba(99,102,241,.15);
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.35), 0 1px 2px rgba(0,0,0,.30);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.45), 0 2px 4px rgba(0,0,0,.30);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.55), 0 4px 8px rgba(0,0,0,.35);
+  --shadow-xl: 0 20px 48px rgba(0,0,0,.65), 0 8px 16px rgba(0,0,0,.40);
+}

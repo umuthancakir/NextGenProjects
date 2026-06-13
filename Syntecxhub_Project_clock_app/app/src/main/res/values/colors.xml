@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base -->
+    <color name="colorPrimary">#6366F1</color>
+    <color name="colorPrimaryVariant">#4F46E5</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSurface">#0F0F24</color>
+    <color name="colorBackground">#07071A</color>
+
+    <!-- Morning: warm cream / orange -->
+    <color name="morning_bg_start">#FFF7ED</color>
+    <color name="morning_bg_end">#FED7AA</color>
+    <color name="morning_accent">#EA580C</color>
+    <color name="morning_on_surface">#1C1917</color>
+    <color name="morning_surface">#FFFFFF</color>
+    <color name="morning_card">#FEF3C7</color>
+
+    <!-- Afternoon: sky blue -->
+    <color name="afternoon_bg_start">#EFF6FF</color>
+    <color name="afternoon_bg_end">#BFDBFE</color>
+    <color name="afternoon_accent">#2563EB</color>
+    <color name="afternoon_on_surface">#1E3A5F</color>
+    <color name="afternoon_surface">#FFFFFF</color>
+    <color name="afternoon_card">#DBEAFE</color>
+
+    <!-- Evening: deep purple -->
+    <color name="evening_bg_start">#1E1B4B</color>
+    <color name="evening_bg_end">#312E81</color>
+    <color name="evening_accent">#EC4899</color>
+    <color name="evening_on_surface">#E2E8F0</color>
+    <color name="evening_surface">#2D2B5E</color>
+    <color name="evening_card">#3730A3</color>
+
+    <!-- Night: deep dark -->
+    <color name="night_bg_start">#020617</color>
+    <color name="night_bg_end">#0F172A</color>
+    <color name="night_accent">#818CF8</color>
+    <color name="night_on_surface">#E2E8F0</color>
+    <color name="night_surface">#0F0F24</color>
+    <color name="night_card">#1E1E3A</color>
+
+    <!-- Pomodoro phases -->
+    <color name="pomodoro_work">#EF4444</color>
+    <color name="pomodoro_short_break">#22C55E</color>
+    <color name="pomodoro_long_break">#3B82F6</color>
+
+    <!-- Stopwatch -->
+    <color name="lap_fastest">#22C55E</color>
+    <color name="lap_slowest">#EF4444</color>
+    <color name="lap_normal">#94A3B8</color>
+
+    <!-- Common -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+</resources>

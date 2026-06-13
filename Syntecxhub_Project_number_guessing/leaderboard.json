@@ -1,0 +1,10 @@
+{
+  "Player": {
+    "games_played": 2,
+    "games_won": 2,
+    "total_attempts": 17,
+    "best": {
+      "medium": 7
+    }
+  }
+}

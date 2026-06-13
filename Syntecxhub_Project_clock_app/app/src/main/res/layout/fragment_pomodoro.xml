@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="32dp"
+    android:paddingBottom="100dp">
+
+    <TextView
+        android:id="@+id/tvPhaseLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Work Session"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="#E2E8F0"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tvSessionCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Session 1 / 4"
+        android:textSize="13sp"
+        android:textColor="#64748B"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Progress ring wrapping the timer -->
+    <FrameLayout
+        android:layout_width="@dimen/progress_ring_size"
+        android:layout_height="@dimen/progress_ring_size"
+        android:layout_marginBottom="32dp">
+
+        <com.syntec.clockapp.views.ProgressRingView
+            android:id="@+id/progressRing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvTimeRemaining"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="25:00"
+                android:textSize="52sp"
+                android:fontFamily="sans-serif-thin"
+                android:textColor="#E2E8F0" />
+
+            <TextView
+                android:id="@+id/tvPhaseEmoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🍅"
+                android:textSize="22sp" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- Tomato session dots -->
+    <LinearLayout
+        android:id="@+id/llSessionDots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="36dp" />
+
+    <!-- Controls -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnReset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset"
+            android:layout_marginEnd="12dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnStartPause"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            style="@style/Widget.MaterialComponents.Button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Skip ›"
+            android:layout_marginStart="12dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvPomodoroTip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Work 25 min, then take a 5-min break. After 4 sessions, take a 15-min long break."
+        android:textSize="12sp"
+        android:textColor="#475569"
+        android:gravity="center"
+        android:paddingHorizontal="16dp" />
+
+</LinearLayout>

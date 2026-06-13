@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="analog_clock_size">280dp</dimen>
+    <dimen name="flip_digit_width">52dp</dimen>
+    <dimen name="flip_digit_height">76dp</dimen>
+    <dimen name="flip_digit_text_size">40sp</dimen>
+    <dimen name="flip_colon_size">24sp</dimen>
+    <dimen name="progress_ring_stroke">14dp</dimen>
+    <dimen name="progress_ring_size">260dp</dimen>
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="world_clock_item_height">72dp</dimen>
+    <dimen name="bottom_nav_elevation">8dp</dimen>
+</resources>

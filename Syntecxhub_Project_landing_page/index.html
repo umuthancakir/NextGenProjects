@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus — Where teams align, projects thrive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* ── Reset ──────────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--color-bg);color:var(--color-text-primary);transition:background var(--duration-slow) var(--ease-out),color var(--duration-slow) var(--ease-out);overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+ul{list-style:none}
+
+/* ── Layout helpers ─────────────────────────────────────────────────── */
+.container{width:100%;max-width:var(--container-xl);margin:0 auto;padding:0 var(--sp-6)}
+.section{padding:var(--sp-24) 0}
+.section-muted{background:var(--color-bg-subtle)}
+.section-dark{background:var(--clr-neutral-900)}
+.row{display:flex;align-items:center;gap:var(--sp-8)}
+.col{flex:1;min-width:0}
+.center{text-align:center}
+.tag{display:inline-flex;align-items:center;gap:var(--sp-2);padding:var(--sp-1) var(--sp-4);background:var(--color-brand-light);color:var(--color-text-brand);font-size:var(--text-xs);font-weight:var(--weight-semibold);text-transform:uppercase;letter-spacing:.08em;border-radius:var(--radius-pill);margin-bottom:var(--sp-5)}
+
+/* ── Typography ─────────────────────────────────────────────────────── */
+.display{font-size:clamp(var(--text-4xl), 6vw, var(--text-7xl));font-weight:var(--weight-extrabold);line-height:var(--leading-tight);letter-spacing:-.02em}
+.h2{font-size:clamp(var(--text-3xl), 4vw, var(--text-5xl));font-weight:var(--weight-bold);line-height:var(--leading-tight);letter-spacing:-.01em}
+.h3{font-size:var(--text-2xl);font-weight:var(--weight-semibold);line-height:var(--leading-snug)}
+.lead{font-size:clamp(var(--text-base),2vw,var(--text-xl));color:var(--color-text-secondary);line-height:var(--leading-relaxed);max-width:52ch}
+.lead.center{margin:0 auto}
+.gradient-text{background:linear-gradient(135deg, var(--color-brand) 0%, var(--color-accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ── Buttons ─────────────────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:var(--sp-2);padding:var(--sp-3) var(--sp-6);font-size:var(--text-sm);font-weight:var(--weight-semibold);border-radius:var(--radius-md);border:1.5px solid transparent;cursor:pointer;transition:all var(--duration-normal) var(--ease-out);user-select:none;white-space:nowrap;line-height:1;text-decoration:none}
+.btn:focus-visible{outline:3px solid var(--color-brand);outline-offset:3px}
+.btn-primary{background:var(--color-brand);color:#fff;border-color:var(--color-brand)}
+.btn-primary:hover{background:var(--color-brand-dark);border-color:var(--color-brand-dark);box-shadow:var(--shadow-brand);transform:translateY(-2px)}
+.btn-primary:active{transform:translateY(0);box-shadow:none}
+.btn-secondary{background:var(--color-surface);color:var(--color-text-primary);border-color:var(--color-border-strong)}
+.btn-secondary:hover{background:var(--color-bg-muted);border-color:var(--color-brand);color:var(--color-text-brand)}
+.btn-ghost-light{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25)}
+.btn-ghost-light:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
+.btn-lg{font-size:var(--text-base);padding:var(--sp-4) var(--sp-8)}
+.btn-pill{border-radius:var(--radius-pill)}
+.btn-cta{font-size:var(--text-base);padding:var(--sp-4) var(--sp-10);border-radius:var(--radius-pill);box-shadow:var(--shadow-brand)}
+.btn-cta:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(99,102,241,.40)}
+
+/* ── Navbar ──────────────────────────────────────────────────────────── */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:var(--z-sticky);padding:var(--sp-5) 0;transition:padding var(--duration-normal) var(--ease-out),background var(--duration-normal) var(--ease-out),box-shadow var(--duration-normal) var(--ease-out)}
+.navbar.scrolled{padding:var(--sp-3) 0;background:rgba(255,255,255,.85);backdrop-filter:blur(16px);box-shadow:var(--shadow-sm);border-bottom:1px solid var(--color-border)}
+[data-theme="dark"] .navbar.scrolled{background:rgba(9,9,11,.85)}
+.nav-inner{display:flex;align-items:center;gap:var(--sp-8)}
+.nav-brand{font-size:var(--text-xl);font-weight:var(--weight-extrabold);background:linear-gradient(135deg,var(--color-brand),var(--color-accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;flex-shrink:0}
+.nav-links{display:flex;gap:var(--sp-8);flex:1;justify-content:center}
+.nav-links a{font-size:var(--text-sm);font-weight:var(--weight-medium);color:var(--color-text-secondary);transition:color var(--duration-fast)}
+.nav-links a:hover{color:var(--color-text-primary)}
+.nav-ctas{display:flex;gap:var(--sp-3);align-items:center;flex-shrink:0}
+.nav-toggle{display:none;flex-direction:column;gap:5px;padding:var(--sp-2);cursor:pointer}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--color-text-primary);border-radius:2px;transition:all var(--duration-normal) var(--ease-out)}
+.nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+.hero{min-height:100vh;display:flex;align-items:center;padding:calc(80px + var(--sp-16)) 0 var(--sp-16);position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.hero-mesh{position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 40%, rgba(99,102,241,.14) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(236,72,153,.10) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 60% 80%, rgba(99,102,241,.08) 0%, transparent 50%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--color-border) 1px,transparent 1px),linear-gradient(90deg,var(--color-border) 1px,transparent 1px);background-size:64px 64px;opacity:.5;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%)}
+.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-16);align-items:center}
+.hero-content{}
+.hero-badges{display:flex;gap:var(--sp-3);flex-wrap:wrap;margin-bottom:var(--sp-6)}
+.hero-badge{display:inline-flex;align-items:center;gap:var(--sp-2);padding:var(--sp-2) var(--sp-4);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-pill);font-size:var(--text-xs);font-weight:var(--weight-medium);box-shadow:var(--shadow-xs)}
+.hero-title{margin-bottom:var(--sp-6)}
+.hero-lead{margin-bottom:var(--sp-10);max-width:44ch}
+.hero-actions{display:flex;gap:var(--sp-4);flex-wrap:wrap;align-items:center;margin-bottom:var(--sp-10)}
+.hero-social{display:flex;align-items:center;gap:var(--sp-6);font-size:var(--text-sm);color:var(--color-text-secondary)}
+.hero-social strong{color:var(--color-text-primary)}
+.avatar-stack{display:flex}
+.avatar-stack .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--color-brand),var(--color-accent));border:2px solid var(--color-surface);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;margin-left:-8px}
+.avatar-stack .av:first-child{margin-left:0}
+
+/* Browser mockup */
+.browser-frame{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-2xl);overflow:hidden;box-shadow:var(--shadow-xl);position:relative}
+.browser-bar{background:var(--color-bg-muted);border-bottom:1px solid var(--color-border);padding:var(--sp-3) var(--sp-4);display:flex;align-items:center;gap:var(--sp-3)}
+.browser-dots{display:flex;gap:6px}
+.browser-dots span{width:12px;height:12px;border-radius:50%;background:var(--clr-neutral-300)}
+.browser-dots span:nth-child(1){background:#ff5f57}
+.browser-dots span:nth-child(2){background:#ffbd2e}
+.browser-dots span:nth-child(3){background:#28c840}
+.browser-url{flex:1;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-pill);padding:var(--sp-1) var(--sp-4);font-size:var(--text-xs);color:var(--color-text-tertiary);font-family:var(--font-mono)}
+.browser-body{padding:var(--sp-6);background:var(--color-bg-subtle);min-height:240px;display:flex;flex-direction:column;gap:var(--sp-4)}
+.mock-topbar{background:var(--color-surface);border-radius:var(--radius-lg);padding:var(--sp-3) var(--sp-4);display:flex;align-items:center;gap:var(--sp-4);border:1px solid var(--color-border)}
+.mock-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--color-brand),var(--color-accent))}
+.mock-text{height:10px;background:var(--color-bg-muted);border-radius:var(--radius-pill);flex:1}
+.mock-btn{width:60px;height:24px;background:var(--color-brand);border-radius:var(--radius-md);opacity:.85}
+.mock-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-3)}
+.mock-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-2)}
+.mock-label{height:8px;background:var(--color-bg-muted);border-radius:var(--radius-pill);width:60%}
+.mock-value{height:20px;background:var(--color-brand-light);border-radius:var(--radius-md);width:80%}
+.mock-bar-row{display:flex;gap:var(--sp-2);align-items:flex-end;height:80px}
+.mock-bar{border-radius:var(--radius-sm) var(--radius-sm) 0 0}
+
+/* ── Logos strip ─────────────────────────────────────────────────────── */
+.logos-section{padding:var(--sp-12) 0;border-top:1px solid var(--color-border);border-bottom:1px solid var(--color-border)}
+.logos-label{font-size:var(--text-sm);color:var(--color-text-tertiary);font-weight:var(--weight-medium);margin-bottom:var(--sp-8);text-align:center;text-transform:uppercase;letter-spacing:.08em}
+.logos-row{display:flex;align-items:center;justify-content:center;gap:var(--sp-16);flex-wrap:wrap;opacity:.5;filter:grayscale(1)}
+.logo-item{font-size:var(--text-xl);font-weight:var(--weight-extrabold);color:var(--color-text-primary);letter-spacing:-.04em}
+
+/* ── Feature cards ───────────────────────────────────────────────────── */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-6);margin-top:var(--sp-16)}
+.feat-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:var(--sp-8);transition:box-shadow var(--duration-normal) var(--ease-out),transform var(--duration-normal) var(--ease-out),border-color var(--duration-normal) var(--ease-out)}
+.feat-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px);border-color:var(--color-brand)}
+.feat-icon{width:52px;height:52px;border-radius:var(--radius-xl);background:var(--color-brand-light);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:var(--sp-6)}
+.feat-title{font-size:var(--text-lg);font-weight:var(--weight-semibold);margin-bottom:var(--sp-3)}
+.feat-body{font-size:var(--text-sm);color:var(--color-text-secondary);line-height:var(--leading-relaxed)}
+
+/* ── How it works ────────────────────────────────────────────────────── */
+.steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-12);margin-top:var(--sp-16);position:relative}
+.steps-row::before{content:'';position:absolute;top:28px;left:calc(16.66% + var(--sp-6));right:calc(16.66% + var(--sp-6));height:2px;background:linear-gradient(90deg,var(--color-brand),var(--color-accent))}
+.step{text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--sp-4)}
+.step-num{width:56px;height:56px;border-radius:50%;background:var(--color-brand);color:#fff;font-size:var(--text-xl);font-weight:var(--weight-bold);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;box-shadow:var(--shadow-brand)}
+.step-title{font-size:var(--text-lg);font-weight:var(--weight-semibold)}
+.step-body{font-size:var(--text-sm);color:var(--color-text-secondary);line-height:var(--leading-relaxed);max-width:24ch}
+
+/* ── Pricing ─────────────────────────────────────────────────────────── */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-6);margin-top:var(--sp-16);align-items:start}
+.price-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:var(--sp-8);transition:box-shadow var(--duration-normal) var(--ease-out)}
+.price-card.popular{border-color:var(--color-brand);box-shadow:var(--shadow-brand);transform:scale(1.04)}
+.price-top{margin-bottom:var(--sp-8)}
+.price-tier{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--sp-3)}
+.price-amount{display:flex;align-items:flex-end;gap:var(--sp-2);margin-bottom:var(--sp-2)}
+.price-currency{font-size:var(--text-2xl);font-weight:var(--weight-bold);color:var(--color-text-primary);line-height:1;padding-bottom:6px}
+.price-value{font-size:var(--text-7xl);font-weight:var(--weight-extrabold);line-height:1;letter-spacing:-.04em}
+.price-period{font-size:var(--text-sm);color:var(--color-text-secondary);padding-bottom:8px}
+.price-desc{font-size:var(--text-sm);color:var(--color-text-secondary);line-height:var(--leading-normal)}
+.price-divider{height:1px;background:var(--color-border);margin:var(--sp-8) 0}
+.price-features{display:flex;flex-direction:column;gap:var(--sp-4);margin-bottom:var(--sp-8)}
+.price-feat{display:flex;align-items:flex-start;gap:var(--sp-3);font-size:var(--text-sm)}
+.price-feat .check{color:var(--clr-success-500);flex-shrink:0;margin-top:2px;font-size:1.1em}
+.price-feat .cross{color:var(--color-text-tertiary);flex-shrink:0;margin-top:2px}
+.price-feat span{color:var(--color-text-secondary)}
+.popular-badge{display:inline-block;padding:var(--sp-1) var(--sp-4);background:linear-gradient(135deg,var(--color-brand),var(--color-accent));color:#fff;font-size:var(--text-xs);font-weight:var(--weight-semibold);border-radius:var(--radius-pill);margin-bottom:var(--sp-4)}
+
+/* ── Testimonials ────────────────────────────────────────────────────── */
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-6);margin-top:var(--sp-16)}
+.test-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-2xl);padding:var(--sp-8);display:flex;flex-direction:column;gap:var(--sp-6);transition:box-shadow var(--duration-normal) var(--ease-out)}
+.test-card:hover{box-shadow:var(--shadow-md)}
+.stars{color:#f59e0b;font-size:var(--text-sm);letter-spacing:.1em}
+.test-quote{font-size:var(--text-sm);color:var(--color-text-secondary);line-height:var(--leading-relaxed);flex:1}
+.test-quote::before{content:'\201C';font-size:1.5em;color:var(--color-brand);font-weight:800;line-height:.5;display:block;margin-bottom:var(--sp-2)}
+.test-author{display:flex;align-items:center;gap:var(--sp-3)}
+.test-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:var(--text-sm);color:#fff;flex-shrink:0}
+.test-name{font-size:var(--text-sm);font-weight:var(--weight-semibold)}
+.test-role{font-size:var(--text-xs);color:var(--color-text-tertiary)}
+
+/* ── FAQ ─────────────────────────────────────────────────────────────── */
+.faq-list{margin-top:var(--sp-16);max-width:720px;margin-left:auto;margin-right:auto;display:flex;flex-direction:column;gap:var(--sp-3)}
+.faq-item{border:1px solid var(--color-border);border-radius:var(--radius-xl);overflow:hidden;background:var(--color-surface)}
+.faq-q{width:100%;text-align:left;padding:var(--sp-6) var(--sp-8);font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--color-text-primary);display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);cursor:pointer;background:none;border:none;transition:background var(--duration-fast)}
+.faq-q:hover{background:var(--color-bg-muted)}
+.faq-icon{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--color-brand-light);color:var(--color-text-brand);display:flex;align-items:center;justify-content:center;font-size:1.1em;transition:transform var(--duration-normal) var(--ease-out)}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--color-brand);color:#fff}
+.faq-a{max-height:0;overflow:hidden;transition:max-height var(--duration-slow) var(--ease-out)}
+.faq-item.open .faq-a{max-height:300px}
+.faq-a-inner{padding:0 var(--sp-8) var(--sp-6);font-size:var(--text-sm);color:var(--color-text-secondary);line-height:var(--leading-relaxed)}
+
+/* ── CTA section ─────────────────────────────────────────────────────── */
+.cta-section{background:linear-gradient(135deg, var(--clr-primary-800) 0%, var(--clr-primary-600) 50%, #7c3aed 100%);padding:var(--sp-24) 0;position:relative;overflow:hidden}
+.cta-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:rgba(236,72,153,.2);filter:blur(120px);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cta-inner{position:relative;z-index:1;text-align:center;color:#fff}
+.cta-inner .h2{color:#fff}
+.cta-inner .lead{color:rgba(255,255,255,.8);max-width:48ch;margin:var(--sp-6) auto var(--sp-10)}
+.cta-btns{display:flex;gap:var(--sp-4);justify-content:center;flex-wrap:wrap}
+.cta-note{font-size:var(--text-xs);color:rgba(255,255,255,.55);margin-top:var(--sp-6)}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.footer{background:var(--clr-neutral-950);color:var(--clr-neutral-400);padding:var(--sp-20) 0 var(--sp-10)}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:var(--sp-16);margin-bottom:var(--sp-16)}
+.footer-brand{font-size:var(--text-2xl);font-weight:var(--weight-extrabold);background:linear-gradient(135deg,var(--color-brand),var(--color-accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:var(--sp-4)}
+.footer-tagline{font-size:var(--text-sm);line-height:var(--leading-relaxed);margin-bottom:var(--sp-6);max-width:28ch}
+.footer-socials{display:flex;gap:var(--sp-3)}
+.footer-social{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:var(--text-sm);transition:background var(--duration-fast);color:var(--clr-neutral-300);text-decoration:none}
+.footer-social:hover{background:rgba(255,255,255,.15);color:#fff}
+.footer-col h4{font-size:var(--text-xs);font-weight:var(--weight-semibold);text-transform:uppercase;letter-spacing:.1em;color:var(--clr-neutral-300);margin-bottom:var(--sp-6)}
+.footer-col ul{display:flex;flex-direction:column;gap:var(--sp-3)}
+.footer-col a{font-size:var(--text-sm);transition:color var(--duration-fast)}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:var(--sp-8);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--sp-4)}
+.footer-copy{font-size:var(--text-xs)}
+.footer-badge{font-size:var(--text-xs);display:flex;align-items:center;gap:var(--sp-2)}
+.footer-badge a{color:var(--color-brand);text-decoration:none}
+.footer-badge a:hover{text-decoration:underline}
+
+/* ── Modal ───────────────────────────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:var(--z-modal);opacity:0;pointer-events:none;transition:opacity var(--duration-normal) var(--ease-out);display:flex;align-items:center;justify-content:center;padding:var(--sp-4)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--color-surface);border-radius:var(--radius-2xl);padding:var(--sp-10);width:100%;max-width:480px;box-shadow:var(--shadow-xl);transform:translateY(24px) scale(.97);transition:transform var(--duration-normal) var(--ease-spring);border:1px solid var(--color-border)}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal-close{position:absolute;top:var(--sp-5);right:var(--sp-5);width:32px;height:32px;border-radius:50%;background:var(--color-bg-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1em;transition:background var(--duration-fast)}
+.modal-close:hover{background:var(--color-border)}
+.modal h2{font-size:var(--text-2xl);font-weight:var(--weight-bold);margin-bottom:var(--sp-2)}
+.modal p{font-size:var(--text-sm);color:var(--color-text-secondary);margin-bottom:var(--sp-8);line-height:var(--leading-relaxed)}
+.modal-steps{display:flex;gap:var(--sp-3);margin-bottom:var(--sp-8)}
+.modal-step{flex:1;height:4px;border-radius:var(--radius-pill);background:var(--color-bg-muted);transition:background var(--duration-normal)}
+.modal-step.active{background:var(--color-brand)}
+.form-group{display:flex;flex-direction:column;gap:var(--sp-2);margin-bottom:var(--sp-4)}
+.form-label{font-size:var(--text-sm);font-weight:var(--weight-medium)}
+.input{display:block;width:100%;padding:var(--sp-3) var(--sp-4);font-family:var(--font-sans);font-size:var(--text-sm);color:var(--color-text-primary);background:var(--color-surface);border:1.5px solid var(--color-border);border-radius:var(--radius-md);transition:border-color var(--duration-fast),box-shadow var(--duration-fast);outline:none}
+.input::placeholder{color:var(--color-text-tertiary)}
+.input:focus{border-color:var(--color-brand);box-shadow:0 0 0 3px rgba(99,102,241,.12)}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--sp-3);margin-bottom:var(--sp-8)}
+.plan-opt{border:1.5px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--sp-4);text-align:center;cursor:pointer;transition:all var(--duration-fast)}
+.plan-opt:hover{border-color:var(--color-brand);background:var(--color-brand-light)}
+.plan-opt.selected{border-color:var(--color-brand);background:var(--color-brand-light)}
+.plan-opt .plan-name{font-weight:var(--weight-semibold);font-size:var(--text-sm);margin-bottom:var(--sp-1)}
+.plan-opt .plan-price{font-size:var(--text-xs);color:var(--color-text-secondary)}
+.modal-actions{display:flex;gap:var(--sp-3)}
+
+/* ── Fade-in animations ─────────────────────────────────────────────── */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity var(--duration-slower) var(--ease-out),transform var(--duration-slower) var(--ease-out)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-lead{margin-left:auto;margin-right:auto}
+  .hero-actions{justify-content:center}
+  .hero-social{justify-content:center}
+  .features-grid,.pricing-grid,.test-grid{grid-template-columns:1fr 1fr}
+  .steps-row{grid-template-columns:1fr;gap:var(--sp-8)}
+  .steps-row::before{display:none}
+  .footer-top{grid-template-columns:1fr 1fr}
+}
+@media (max-width:768px){
+  .nav-links,.nav-ctas .btn-secondary{display:none}
+  .nav-toggle{display:flex}
+  .mobile-menu{position:fixed;inset:0;background:var(--color-surface);z-index:calc(var(--z-sticky) - 1);padding:var(--sp-20) var(--sp-6) var(--sp-6);display:flex;flex-direction:column;gap:var(--sp-6);transform:translateX(100%);transition:transform var(--duration-normal) var(--ease-out)}
+  .mobile-menu.open{transform:translateX(0)}
+  .mobile-menu a{font-size:var(--text-2xl);font-weight:var(--weight-bold);color:var(--color-text-primary)}
+  .features-grid,.pricing-grid,.test-grid{grid-template-columns:1fr}
+  .price-card.popular{transform:scale(1)}
+  .footer-top{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .logos-row{gap:var(--sp-8)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ════════════════════════════════════════════════════════════ -->
+<header class="navbar" id="navbar">
+  <div class="container">
+    <nav class="nav-inner">
+      <a href="#" class="nav-brand">Nexus</a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="design-system.html" style="color:var(--color-text-brand)">Design System ↗</a></li>
+      </ul>
+      <div class="nav-ctas">
+        <button class="btn btn-secondary btn-sm" onclick="toggleTheme()" id="theme-btn" title="Toggle dark mode">🌙</button>
+        <button class="btn btn-secondary btn-sm" onclick="window.location.href='#'">Log in</button>
+        <button class="btn btn-primary btn-sm btn-pill" onclick="openModal()">Get started free</button>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<nav class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="#features" onclick="closeMobileMenu()">Features</a>
+  <a href="#how" onclick="closeMobileMenu()">How it works</a>
+  <a href="#pricing" onclick="closeMobileMenu()">Pricing</a>
+  <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+  <hr style="border-color:var(--color-border)">
+  <button class="btn btn-primary btn-lg btn-pill" onclick="openModal();closeMobileMenu()">Get started free</button>
+</nav>
+
+<!-- ══ HERO ═══════════════════════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="hero-mesh"></div>
+    <div class="hero-grid"></div>
+  </div>
+  <div class="container">
+    <div class="hero-inner">
+      <!-- Left: content -->
+      <div class="hero-content">
+        <div class="hero-badges">
+          <span class="hero-badge">✦ Now in public beta</span>
+          <span class="hero-badge">🏆 #1 on Product Hunt</span>
+        </div>
+        <h1 class="display hero-title">
+          Where teams<br>
+          <span class="gradient-text">align &amp; thrive</span>
+        </h1>
+        <p class="lead hero-lead">Nexus brings your roadmap, tasks, and team conversations into one beautifully simple workspace — so nothing falls through the cracks.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-cta" onclick="openModal()">
+            Start for free &rarr;
+          </button>
+          <button class="btn btn-secondary btn-lg">Watch demo ▶</button>
+        </div>
+        <div class="hero-social">
+          <div class="avatar-stack">
+            <div class="av" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">JD</div>
+            <div class="av" style="background:linear-gradient(135deg,#ec4899,#f97316)">SK</div>
+            <div class="av" style="background:linear-gradient(135deg,#10b981,#6366f1)">AL</div>
+            <div class="av" style="background:linear-gradient(135deg,#f59e0b,#ec4899)">MR</div>
+          </div>
+          <span>Loved by <strong>12,000+</strong> teams worldwide</span>
+        </div>
+      </div>
+      <!-- Right: browser mockup -->
+      <div class="hero-visual fade-up">
+        <div class="browser-frame">
+          <div class="browser-bar">
+            <div class="browser-dots"><span></span><span></span><span></span></div>
+            <div class="browser-url">app.nexus.io/dashboard</div>
+          </div>
+          <div class="browser-body">
+            <div class="mock-topbar">
+              <div class="mock-avatar"></div>
+              <div class="mock-text"></div>
+              <div class="mock-btn"></div>
+            </div>
+            <div class="mock-grid">
+              <div class="mock-card"><div class="mock-label"></div><div class="mock-value" style="background:rgba(99,102,241,.2)"></div></div>
+              <div class="mock-card"><div class="mock-label"></div><div class="mock-value" style="background:rgba(236,72,153,.2)"></div></div>
+              <div class="mock-card"><div class="mock-label"></div><div class="mock-value" style="background:rgba(16,185,129,.2)"></div></div>
+            </div>
+            <div class="mock-bar-row" style="padding:var(--sp-2)">
+              <div class="mock-bar" style="flex:1;height:40%;background:rgba(99,102,241,.4)"></div>
+              <div class="mock-bar" style="flex:1;height:70%;background:rgba(99,102,241,.6)"></div>
+              <div class="mock-bar" style="flex:1;height:55%;background:rgba(99,102,241,.4)"></div>
+              <div class="mock-bar" style="flex:1;height:85%;background:var(--color-brand)"></div>
+              <div class="mock-bar" style="flex:1;height:60%;background:rgba(99,102,241,.5)"></div>
+              <div class="mock-bar" style="flex:1;height:45%;background:rgba(99,102,241,.4)"></div>
+              <div class="mock-bar" style="flex:1;height:75%;background:rgba(99,102,241,.7)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SOCIAL PROOF ═══════════════════════════════════════════════════════ -->
+<div class="logos-section">
+  <div class="container">
+    <p class="logos-label">Trusted by teams at</p>
+    <div class="logos-row">
+      <span class="logo-item">Stripe</span>
+      <span class="logo-item">Notion</span>
+      <span class="logo-item">Figma</span>
+      <span class="logo-item">Linear</span>
+      <span class="logo-item">Vercel</span>
+      <span class="logo-item">Loom</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FEATURES ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="center fade-up">
+      <div class="tag">Features</div>
+      <h2 class="h2">Everything your team needs,<br>nothing it doesn't</h2>
+      <p class="lead center" style="margin-top:var(--sp-4)">Designed for speed. Built for clarity. Nexus eliminates tool-switching so your team can focus on what actually matters.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card fade-up"><div class="feat-icon">🗺️</div><h3 class="feat-title">Visual Roadmaps</h3><p class="feat-body">Drag-and-drop timelines that connect strategy to execution. Every milestone, sprint, and release in one view.</p></div>
+      <div class="feat-card fade-up"><div class="feat-icon">⚡</div><h3 class="feat-title">Real-time Sync</h3><p class="feat-body">Instant updates across all devices. No refresh needed — changes appear the moment they're made.</p></div>
+      <div class="feat-card fade-up"><div class="feat-icon">🤖</div><h3 class="feat-title">AI Assist</h3><p class="feat-body">Let AI write task descriptions, summarise threads, and flag blockers before they become bottlenecks.</p></div>
+      <div class="feat-card fade-up"><div class="feat-icon">📊</div><h3 class="feat-title">Analytics & Reports</h3><p class="feat-body">Velocity, burn-down, cycle time — beautiful charts that give leadership the confidence to make decisions.</p></div>
+      <div class="feat-card fade-up"><div class="feat-icon">🔗</div><h3 class="feat-title">500+ Integrations</h3><p class="feat-body">Slack, GitHub, Figma, Jira — Nexus sits where your team already works, pulling everything together.</p></div>
+      <div class="feat-card fade-up"><div class="feat-icon">🔒</div><h3 class="feat-title">Enterprise Security</h3><p class="feat-body">SOC 2 Type II certified. SSO, SCIM provisioning, audit logs, and role-based access out of the box.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ════════════════════════════════════════════════════════ -->
+<section class="section section-muted" id="how">
+  <div class="container">
+    <div class="center fade-up">
+      <div class="tag">How it works</div>
+      <h2 class="h2">Up and running in minutes</h2>
+      <p class="lead center" style="margin-top:var(--sp-4)">No lengthy onboarding. No migration headaches. Just three steps to a calmer, more aligned team.</p>
+    </div>
+    <div class="steps-row">
+      <div class="step fade-up">
+        <div class="step-num">1</div>
+        <h3 class="step-title">Connect your tools</h3>
+        <p class="step-body">Import from Jira, Notion, or Trello in one click. Bring your data, not your chaos.</p>
+      </div>
+      <div class="step fade-up">
+        <div class="step-num">2</div>
+        <h3 class="step-title">Invite your team</h3>
+        <p class="step-body">Add teammates via email or SSO. Roles and permissions are set automatically.</p>
+      </div>
+      <div class="step fade-up">
+        <div class="step-num">3</div>
+        <h3 class="step-title">Ship together</h3>
+        <p class="step-body">Plan sprints, track progress, and celebrate wins — all in the same place.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING ════════════════════════════════════════════════════════════ -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="center fade-up">
+      <div class="tag">Pricing</div>
+      <h2 class="h2">Simple, honest pricing</h2>
+      <p class="lead center" style="margin-top:var(--sp-4)">Start free. Scale when you're ready. No hidden fees, no surprise overages.</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- Starter -->
+      <div class="price-card fade-up">
+        <div class="price-top">
+          <p class="price-tier">Starter</p>
+          <div class="price-amount"><span class="price-currency">$</span><span class="price-value">0</span><span class="price-period">/mo</span></div>
+          <p class="price-desc">For individuals and small teams just getting started.</p>
+        </div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li class="price-feat"><span class="check">✓</span><span>Up to 5 members</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>3 active projects</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>Basic roadmaps</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>Community support</span></li>
+          <li class="price-feat"><span class="cross">✗</span><span style="color:var(--color-text-tertiary)">AI Assist</span></li>
+          <li class="price-feat"><span class="cross">✗</span><span style="color:var(--color-text-tertiary)">Analytics</span></li>
+        </ul>
+        <button class="btn btn-secondary" style="width:100%" onclick="openModal()">Get started free</button>
+      </div>
+
+      <!-- Pro (popular) -->
+      <div class="price-card popular fade-up">
+        <div class="popular-badge">✦ Most Popular</div>
+        <div class="price-top">
+          <p class="price-tier" style="color:var(--color-text-brand)">Pro</p>
+          <div class="price-amount"><span class="price-currency">$</span><span class="price-value gradient-text">18</span><span class="price-period">/seat/mo</span></div>
+          <p class="price-desc">For growing teams that need power without complexity.</p>
+        </div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li class="price-feat"><span class="check">✓</span><span>Unlimited members</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>Unlimited projects</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>Advanced roadmaps</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>AI Assist</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>Full analytics suite</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>Priority support</span></li>
+        </ul>
+        <button class="btn btn-primary" style="width:100%" onclick="openModal()">Start 14-day free trial</button>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="price-card fade-up">
+        <div class="price-top">
+          <p class="price-tier">Enterprise</p>
+          <div class="price-amount"><span class="price-value" style="font-size:var(--text-4xl);color:var(--color-text-primary)">Custom</span></div>
+          <p class="price-desc">For large organisations with custom security and compliance needs.</p>
+        </div>
+        <div class="price-divider"></div>
+        <ul class="price-features">
+          <li class="price-feat"><span class="check">✓</span><span>Everything in Pro</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>SSO / SCIM</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>Audit logs</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>Custom SLA</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>Dedicated CSM</span></li>
+          <li class="price-feat"><span class="check">✓</span><span>On-premise option</span></li>
+        </ul>
+        <button class="btn btn-secondary" style="width:100%">Contact sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ════════════════════════════════════════════════════════ -->
+<section class="section section-muted">
+  <div class="container">
+    <div class="center fade-up">
+      <div class="tag">Testimonials</div>
+      <h2 class="h2">Teams love Nexus</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p class="test-quote">We cut our weekly status meetings from 5 hours to 30 minutes. Everyone just checks Nexus instead. It's that good.</p>
+        <div class="test-author">
+          <div class="test-av" style="background:linear-gradient(135deg,#6366f1,#8b5cf6)">SL</div>
+          <div><div class="test-name">Sarah Lin</div><div class="test-role">Head of Engineering, Stripe</div></div>
+        </div>
+      </div>
+      <div class="test-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p class="test-quote">The AI summaries alone save me two hours a day. I finally feel on top of every project without drowning in notifications.</p>
+        <div class="test-author">
+          <div class="test-av" style="background:linear-gradient(135deg,#ec4899,#f97316)">JK</div>
+          <div><div class="test-name">James Kim</div><div class="test-role">Product Lead, Notion</div></div>
+        </div>
+      </div>
+      <div class="test-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p class="test-quote">Migrated 80 people off Jira in a weekend. I was terrified. It went flawlessly. Nexus's import is witchcraft.</p>
+        <div class="test-author">
+          <div class="test-av" style="background:linear-gradient(135deg,#10b981,#6366f1)">AR</div>
+          <div><div class="test-name">Aisha Rawat</div><div class="test-role">CTO, Loom</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ════════════════════════════════════════════════════════════════ -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="center fade-up">
+      <div class="tag">FAQ</div>
+      <h2 class="h2">Common questions</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is there a free plan? <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Yes — the Starter plan is free forever for up to 5 team members and 3 active projects. No credit card required. You can upgrade to Pro whenever you need more power.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can I import data from Jira or Trello? <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Absolutely. Nexus supports one-click imports from Jira, Trello, Notion, Asana, Linear, and any CSV export. Your data, your history, your way.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How does the 14-day trial work? <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Sign up for Pro and get all features free for 14 days. No credit card needed upfront. If you decide Pro isn't right for you, you automatically drop to the Starter plan — no surprises.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is my data secure? <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Nexus is SOC 2 Type II certified. All data is encrypted at rest (AES-256) and in transit (TLS 1.3). We run on AWS with 99.99% uptime SLA and daily backups.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can I cancel any time? <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Yes. Cancel in two clicks from your account settings. There are no cancellation fees and no lock-in contracts. Monthly plans cancel immediately; annual plans are refunded pro-rata.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ════════════════════════════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="container">
+    <div class="cta-inner fade-up">
+      <h2 class="h2">Ready to build something great?</h2>
+      <p class="lead">Join 12,000+ teams who've replaced chaos with clarity. Start free — no credit card, no commitment.</p>
+      <div class="cta-btns">
+        <button class="btn btn-lg btn-pill" style="background:#fff;color:var(--clr-primary-700);font-weight:var(--weight-bold)" onclick="openModal()">Get started free →</button>
+        <button class="btn btn-ghost-light btn-lg btn-pill">Talk to sales</button>
+      </div>
+      <p class="cta-note">Free plan available · 14-day Pro trial · Cancel any time</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">Nexus</div>
+        <p class="footer-tagline">Where teams align, projects thrive, and nothing falls through the cracks.</p>
+        <div class="footer-socials">
+          <a class="footer-social" href="#" aria-label="Twitter">𝕏</a>
+          <a class="footer-social" href="#" aria-label="LinkedIn">in</a>
+          <a class="footer-social" href="#" aria-label="GitHub">⌥</a>
+          <a class="footer-social" href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Integrations</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">Roadmap</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers <span style="background:var(--color-brand);color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:4px">3</span></a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Templates</a></li>
+          <li><a href="design-system.html" style="color:var(--color-brand)">Design System ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Nexus, Inc. · <a href="#" style="color:var(--clr-neutral-400)">Privacy</a> · <a href="#" style="color:var(--clr-neutral-400)">Terms</a> · <a href="#" style="color:var(--clr-neutral-400)">Cookies</a></p>
+      <p class="footer-badge">Built with ♥ · <a href="design-system.html">View Design System</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ MODAL — Multi-step signup ═════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="position:relative">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
+
+    <!-- Step indicators -->
+    <div class="modal-steps">
+      <div class="modal-step active" id="ms1"></div>
+      <div class="modal-step" id="ms2"></div>
+      <div class="modal-step" id="ms3"></div>
+    </div>
+
+    <!-- Step 1: Email -->
+    <div id="modal-step-1">
+      <h2 id="modal-title">Create your account</h2>
+      <p>Start your free trial — no credit card required.</p>
+      <div class="form-group"><label class="form-label">Full name</label><input class="input" id="m-name" type="text" placeholder="Umuthan Çakır"></div>
+      <div class="form-group"><label class="form-label">Work email</label><input class="input" id="m-email" type="email" placeholder="you@company.com"></div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="modalNext(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Plan -->
+    <div id="modal-step-2" style="display:none">
+      <h2>Choose your plan</h2>
+      <p>Try Pro free for 14 days — downgrade any time.</p>
+      <div class="plan-grid">
+        <div class="plan-opt selected" id="plan-starter" onclick="selectPlan('starter')"><div class="plan-name">Starter</div><div class="plan-price">Free</div></div>
+        <div class="plan-opt" id="plan-pro" onclick="selectPlan('pro')"><div class="plan-name">Pro ✦</div><div class="plan-price">$18/seat</div></div>
+        <div class="plan-opt" id="plan-enterprise" onclick="selectPlan('enterprise')"><div class="plan-name">Enterprise</div><div class="plan-price">Custom</div></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" style="flex:1;justify-content:center" onclick="modalBack(1)">← Back</button>
+        <button class="btn btn-primary" style="flex:2;justify-content:center" onclick="modalNext(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Confirmation -->
+    <div id="modal-step-3" style="display:none;text-align:center">
+      <div style="font-size:3rem;margin-bottom:var(--sp-4)">🎉</div>
+      <h2>You're all set!</h2>
+      <p>Welcome to Nexus. Check your inbox for a confirmation link, then build something great.</p>
+      <button class="btn btn-primary btn-cta" style="margin-top:var(--sp-6);width:100%;justify-content:center" onclick="closeModal()">Open your workspace →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Theme toggle ──────────────────────────────────────────────────── */
+function toggleTheme() {
+  const html  = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-btn').textContent = isDark ? '🌙' : '☀️';
+}
+
+/* ── Navbar scroll ─────────────────────────────────────────────────── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ── Mobile menu ───────────────────────────────────────────────────── */
+const navToggle = document.getElementById('nav-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+
+function closeMobileMenu() {
+  navToggle.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  navToggle.setAttribute('aria-expanded', 'false');
+  mobileMenu.setAttribute('aria-hidden', 'true');
+}
+
+navToggle.addEventListener('click', () => {
+  const isOpen = mobileMenu.classList.toggle('open');
+  navToggle.classList.toggle('open', isOpen);
+  navToggle.setAttribute('aria-expanded', isOpen);
+  mobileMenu.setAttribute('aria-hidden', !isOpen);
+});
+
+/* ── Intersection Observer: fade-up ───────────────────────────────── */
+const fadeEls = document.querySelectorAll('.fade-up');
+const fadeObs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (!e.isIntersecting) return;
+    setTimeout(() => e.target.classList.add('visible'), i * 80);
+    fadeObs.unobserve(e.target);
+  });
+}, { threshold: 0.10 });
+fadeEls.forEach(el => fadeObs.observe(el));
+
+/* ── FAQ accordion ─────────────────────────────────────────────────── */
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+/* ── Modal ─────────────────────────────────────────────────────────── */
+const overlay = document.getElementById('modal-overlay');
+let selectedPlan = 'starter';
+
+function openModal() {
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('modal-step-1').style.display = '';
+  document.getElementById('modal-step-2').style.display = 'none';
+  document.getElementById('modal-step-3').style.display = 'none';
+  setModalStep(1);
+}
+function closeModal() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleOverlayClick(e) {
+  if (e.target === overlay) closeModal();
+}
+function setModalStep(n) {
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('ms' + i).classList.toggle('active', i <= n);
+  }
+}
+function modalNext(step) {
+  if (step === 2) {
+    const email = document.getElementById('m-email').value.trim();
+    const name  = document.getElementById('m-name').value.trim();
+    if (!name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Please enter your name and a valid email.');
+      return;
+    }
+  }
+  document.getElementById('modal-step-' + (step - 1)).style.display = 'none';
+  document.getElementById('modal-step-' + step).style.display = '';
+  setModalStep(step);
+}
+function modalBack(step) {
+  document.getElementById('modal-step-' + (step + 1)).style.display = 'none';
+  document.getElementById('modal-step-' + step).style.display = '';
+  setModalStep(step);
+}
+function selectPlan(plan) {
+  selectedPlan = plan;
+  ['starter','pro','enterprise'].forEach(p => {
+    document.getElementById('plan-' + p).classList.toggle('selected', p === plan);
+  });
+}
+
+/* Close modal on Escape */
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>

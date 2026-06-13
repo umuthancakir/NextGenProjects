@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">ClockApp</string>
+
+    <!-- Nav labels -->
+    <string name="nav_clock">Clock</string>
+    <string name="nav_world">World</string>
+    <string name="nav_focus">Focus</string>
+    <string name="nav_stopwatch">Stopwatch</string>
+
+    <!-- Clock fragment -->
+    <string name="speak_time">Speak Time</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="daylight_remaining">daylight remaining</string>
+    <string name="polar_day">Polar day</string>
+    <string name="polar_night">Polar night</string>
+
+    <!-- Greetings -->
+    <string name="greeting_morning">Good morning</string>
+    <string name="greeting_afternoon">Good afternoon</string>
+    <string name="greeting_evening">Good evening</string>
+    <string name="greeting_night">Good night</string>
+
+    <!-- Motivational messages (one per day of week) -->
+    <string-array name="daily_messages">
+        <item>Start the week with intention.</item>
+        <item>Keep the momentum going.</item>
+        <item>You\'re halfway through the week.</item>
+        <item>Almost there — push forward.</item>
+        <item>Finish strong today.</item>
+        <item>Rest and recharge.</item>
+        <item>A day for reflection and renewal.</item>
+    </string-array>
+
+    <!-- Pomodoro -->
+    <string name="pomodoro_work">Work Session</string>
+    <string name="pomodoro_short_break">Short Break</string>
+    <string name="pomodoro_long_break">Long Break</string>
+    <string name="session_count">Session %d / 4</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="reset">Reset</string>
+    <string name="skip">Skip</string>
+
+    <!-- Stopwatch -->
+    <string name="lap">Lap</string>
+    <string name="stop">Stop</string>
+    <string name="fastest">Fastest</string>
+    <string name="slowest">Slowest</string>
+
+    <!-- Widget -->
+    <string name="widget_label">Clock Widget</string>
+
+    <!-- Notification -->
+    <string name="timer_channel_id">timer_channel</string>
+    <string name="timer_channel_name">Timer</string>
+    <string name="timer_notification_title">Timer Running</string>
+    <string name="pomodoro_done_title">Session Complete</string>
+    <string name="pomodoro_done_body">Time for a break! 🍅</string>
+</resources>

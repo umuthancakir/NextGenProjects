@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#CC07071A"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/widgetTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12:00"
+        android:textSize="36sp"
+        android:fontFamily="sans-serif-thin"
+        android:textColor="#E2E8F0" />
+
+    <TextView
+        android:id="@+id/widgetGreeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Good afternoon"
+        android:textSize="12sp"
+        android:textColor="#94A3B8" />
+
+    <TextView
+        android:id="@+id/widgetDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thursday, 12 June"
+        android:textSize="11sp"
+        android:textColor="#475569" />
+
+</LinearLayout>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="100dp">
+
+        <!-- Greeting + daily message -->
+        <TextView
+            android:id="@+id/tvGreeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Good morning"
+            android:textSize="22sp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="#E2E8F0"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/tvDailyMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="13sp"
+            android:textColor="#94A3B8"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Analog clock -->
+        <com.syntec.clockapp.views.AnalogClockView
+            android:id="@+id/analogClock"
+            android:layout_width="@dimen/analog_clock_size"
+            android:layout_height="@dimen/analog_clock_size"
+            android:layout_marginBottom="28dp" />
+
+        <!-- Date -->
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thursday, 12 June"
+            android:textSize="16sp"
+            android:textColor="#94A3B8"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Flip digital clock: HH:MM:SS -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="32dp">
+
+            <com.syntec.clockapp.views.FlipClockView android:id="@+id/digitH1"
+                android:layout_width="@dimen/flip_digit_width"
+                android:layout_height="@dimen/flip_digit_height" />
+            <com.syntec.clockapp.views.FlipClockView android:id="@+id/digitH2"
+                android:layout_width="@dimen/flip_digit_width"
+                android:layout_height="@dimen/flip_digit_height"
+                android:layout_marginStart="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="@dimen/flip_colon_size"
+                android:textColor="#94A3B8"
+                android:paddingHorizontal="4dp" />
+
+            <com.syntec.clockapp.views.FlipClockView android:id="@+id/digitM1"
+                android:layout_width="@dimen/flip_digit_width"
+                android:layout_height="@dimen/flip_digit_height" />
+            <com.syntec.clockapp.views.FlipClockView android:id="@+id/digitM2"
+                android:layout_width="@dimen/flip_digit_width"
+                android:layout_height="@dimen/flip_digit_height"
+                android:layout_marginStart="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="@dimen/flip_colon_size"
+                android:textColor="#94A3B8"
+                android:paddingHorizontal="4dp" />
+
+            <com.syntec.clockapp.views.FlipClockView android:id="@+id/digitS1"
+                android:layout_width="@dimen/flip_digit_width"
+                android:layout_height="@dimen/flip_digit_height" />
+            <com.syntec.clockapp.views.FlipClockView android:id="@+id/digitS2"
+                android:layout_width="@dimen/flip_digit_width"
+                android:layout_height="@dimen/flip_digit_height"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
+
+        <!-- Sunrise / Sunset card -->
+        <LinearLayout
+            android:id="@+id/sunCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#1A1E1E3A"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- sunrise -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🌅"
+                    android:textSize="24sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sunrise"
+                    android:textSize="11sp"
+                    android:textColor="#64748B" />
+                <TextView
+                    android:id="@+id/tvSunrise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textSize="16sp"
+                    android:textColor="#E2E8F0"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+
+            <!-- daylight remaining -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="☀️"
+                    android:textSize="24sp" />
+                <TextView
+                    android:id="@+id/tvDaylightRemaining"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—h left"
+                    android:textSize="14sp"
+                    android:textColor="#94A3B8"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <!-- sunset -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🌇"
+                    android:textSize="24sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sunset"
+                    android:textSize="11sp"
+                    android:textColor="#64748B" />
+                <TextView
+                    android:id="@+id/tvSunset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textSize="16sp"
+                    android:textColor="#E2E8F0"
+                    android:fontFamily="sans-serif-medium" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- TTS button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSpeak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔊 Speak Time"
+            android:textSize="13sp"
+            app:cornerRadius="24dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+    </LinearLayout>
+</ScrollView>

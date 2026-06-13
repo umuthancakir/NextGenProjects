@@ -1,0 +1,18 @@
+id,name,price,category
+M001,Butter Chicken,320.0,Food
+M002,Paneer Tikka,280.0,Food
+M003,Dal Makhani,220.0,Food
+M004,Veg Biryani,260.0,Food
+M005,Naan,40.0,Food
+M006,Jeera Rice,120.0,Food
+M007,Samosa (2 pcs),60.0,Food
+M008,Masala Chai,30.0,Beverage
+M009,Cold Coffee,120.0,Beverage
+M010,Fresh Lime Soda,80.0,Beverage
+M011,Mango Lassi,100.0,Beverage
+M012,Mineral Water,20.0,Beverage
+M013,Gulab Jamun (2 pcs),80.0,Dessert
+M014,Kulfi,90.0,Dessert
+M015,Rasgulla (2 pcs),70.0,Dessert
+M016,Chef's Special Thali,450.0,Special
+M017,Family Combo,890.0,Special

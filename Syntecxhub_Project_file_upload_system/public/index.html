@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PixelVault — Image Upload System</title>
+<style>
+/* ── Reset & tokens ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:          #07071a;
+  --surface:     #0f0f24;
+  --surface-2:   #16163a;
+  --border:      #1e1e44;
+  --text:        #e2e8f0;
+  --text-muted:  #64748b;
+  --accent:      #6366f1;
+  --accent-2:    #ec4899;
+  --success:     #22c55e;
+  --warning:     #f59e0b;
+  --error:       #ef4444;
+  --radius:      12px;
+  --shadow:      0 4px 24px rgba(0,0,0,.4);
+  --transition:  .2s cubic-bezier(.4,0,.2,1);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+a { color: inherit; text-decoration: none; }
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: var(--transition);
+}
+input, select {
+  font-family: inherit;
+  outline: none;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: .5rem .85rem;
+  font-size: .875rem;
+  transition: border-color var(--transition);
+}
+input:focus, select:focus { border-color: var(--accent); }
+
+/* ── Layout ─────────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(7,7,26,.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+  height: 60px;
+  display: flex; align-items: center; gap: 1rem;
+}
+.nav-logo {
+  font-size: 1.15rem; font-weight: 800;
+  background: linear-gradient(135deg,#818cf8,#ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-right: auto;
+}
+.nav-quota {
+  display: flex; align-items: center; gap: .6rem;
+  font-size: .8rem; color: var(--text-muted);
+}
+.quota-bar {
+  width: 80px; height: 6px;
+  background: var(--border);
+  border-radius: 99px; overflow: hidden;
+}
+.quota-fill {
+  height: 100%;
+  background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  border-radius: 99px;
+  transition: width .6s ease;
+}
+.nav-user {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .8rem;
+}
+.nav-user input { width: 120px; }
+
+.tabs {
+  display: flex; gap: 0; border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem;
+  background: var(--surface);
+}
+.tab-btn {
+  padding: .75rem 1.25rem;
+  font-size: .875rem; font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn:hover:not(.active) { color: var(--text); }
+
+.tab-panel { display: none; padding: 1.5rem; }
+.tab-panel.active { display: block; }
+
+/* ── Upload tab ─────────────────────────────────────────────── */
+.upload-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.5rem;
+  max-width: 1100px;
+}
+@media (max-width: 900px) { .upload-layout { grid-template-columns: 1fr; } }
+
+.drop-zone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 3.5rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  background: var(--surface);
+  position: relative;
+}
+.drop-zone.dragover {
+  border-color: var(--accent);
+  background: rgba(99,102,241,.06);
+  transform: scale(1.01);
+}
+.drop-zone-icon {
+  font-size: 3rem; line-height: 1; margin-bottom: 1rem;
+  filter: grayscale(.3);
+}
+.drop-zone h2 { font-size: 1.1rem; margin-bottom: .4rem; }
+.drop-zone p  { color: var(--text-muted); font-size: .875rem; }
+.drop-zone-input { display: none; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .6rem 1.3rem;
+  background: var(--accent);
+  color: #fff; border-radius: 8px;
+  font-size: .875rem; font-weight: 600;
+  margin-top: 1rem;
+}
+.btn-primary:hover { background: #4f46e5; }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .45rem 1rem;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text-muted); border-radius: 8px;
+  font-size: .8rem;
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--text); }
+
+.file-queue { display: flex; flex-direction: column; gap: .75rem; }
+.file-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .9rem 1rem;
+  display: flex; align-items: center; gap: .9rem;
+}
+.file-thumb {
+  width: 52px; height: 52px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--surface-2);
+  flex-shrink: 0;
+}
+.file-info { flex: 1; min-width: 0; }
+.file-name {
+  font-size: .875rem; font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.file-size { font-size: .75rem; color: var(--text-muted); margin-top: .1rem; }
+.file-status {
+  font-size: .72rem; font-weight: 600; margin-top: .4rem;
+  padding: .15rem .55rem; border-radius: 99px; display: inline-block;
+}
+.status-pending  { background: rgba(100,116,139,.15); color: var(--text-muted); }
+.status-uploading{ background: rgba(99,102,241,.15);  color: #818cf8; }
+.status-processing{background: rgba(245,158,11,.12);  color: var(--warning); }
+.status-done     { background: rgba(34,197,94,.12);   color: var(--success); }
+.status-duplicate{ background: rgba(236,72,153,.12);  color: #f472b6; }
+.status-error    { background: rgba(239,68,68,.12);   color: var(--error); }
+
+.progress-wrap { margin-top: .5rem; }
+.progress-bar-bg {
+  height: 4px; background: var(--border);
+  border-radius: 99px; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  border-radius: 99px;
+  transition: width .3s ease;
+}
+.progress-label { font-size: .7rem; color: var(--text-muted); margin-top: .2rem; }
+
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.panel-title { font-size: .9rem; font-weight: 700; color: var(--text); }
+.badge {
+  background: var(--surface-2); color: var(--text-muted);
+  font-size: .7rem; font-weight: 700;
+  padding: .15rem .5rem; border-radius: 99px;
+}
+
+/* ── Gallery tab ─────────────────────────────────────────────── */
+.gallery-toolbar {
+  display: flex; align-items: center; gap: .75rem;
+  margin-bottom: 1.25rem; flex-wrap: wrap;
+}
+.gallery-toolbar input[type=text] { flex: 1; min-width: 200px; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.gallery-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.gallery-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(99,102,241,.2);
+  border-color: rgba(99,102,241,.4);
+}
+.gallery-img-wrap {
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--surface-2);
+  position: relative;
+}
+.gallery-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition);
+}
+.gallery-card:hover .gallery-img { transform: scale(1.04); }
+.gallery-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; color: var(--text-muted);
+}
+.gallery-meta {
+  padding: .65rem .8rem;
+}
+.gallery-name {
+  font-size: .78rem; font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: .35rem;
+}
+.gallery-tags { display: flex; flex-wrap: wrap; gap: .25rem; }
+.tag {
+  font-size: .65rem; font-weight: 600;
+  padding: .1rem .45rem;
+  border-radius: 99px;
+  background: rgba(99,102,241,.12);
+  color: #a5b4fc;
+}
+.color-dot {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.1);
+  margin-right: .25rem;
+  vertical-align: middle;
+}
+.gallery-size { font-size: .68rem; color: var(--text-muted); margin-top: .3rem; }
+
+.gallery-empty {
+  grid-column: 1/-1;
+  text-align: center; padding: 4rem 2rem;
+  color: var(--text-muted);
+}
+.gallery-empty .icon { font-size: 3rem; margin-bottom: 1rem; }
+
+.pagination {
+  display: flex; justify-content: center; align-items: center;
+  gap: .5rem; margin-top: 2rem;
+}
+.page-btn {
+  padding: .4rem .8rem;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: .8rem;
+}
+.page-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.page-btn:hover:not(.active) { border-color: var(--accent); color: var(--text); }
+
+/* ── Lightbox ───────────────────────────────────────────────── */
+.lightbox {
+  display: none;
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,.85);
+  backdrop-filter: blur(8px);
+  padding: 1.5rem;
+  animation: fadeIn .2s ease;
+}
+.lightbox.open { display: flex; gap: 1.5rem; }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+.lightbox-img-wrap {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  min-width: 0;
+}
+.lightbox-img {
+  max-width: 100%; max-height: 90vh;
+  border-radius: var(--radius);
+  object-fit: contain;
+  box-shadow: var(--shadow);
+}
+.lightbox-sidebar {
+  width: 300px; flex-shrink: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+.lightbox-close {
+  position: fixed; top: 1.25rem; right: 1.25rem;
+  width: 36px; height: 36px;
+  background: var(--surface-2); border-radius: 50%;
+  color: var(--text); font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+}
+.lightbox-close:hover { background: var(--error); border-color: var(--error); }
+.detail-label { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin-top: 1rem; margin-bottom: .3rem; }
+.detail-value { font-size: .85rem; color: var(--text); word-break: break-all; }
+.detail-row { display: flex; justify-content: space-between; align-items: center; }
+.palette-swatch {
+  display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .4rem;
+}
+.swatch {
+  width: 24px; height: 24px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.lb-actions { display: flex; flex-direction: column; gap: .5rem; margin-top: 1rem; }
+.lb-actions .btn-ghost { justify-content: center; }
+.btn-danger {
+  padding: .45rem 1rem;
+  background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3);
+  color: var(--error); border-radius: 8px;
+  font-size: .8rem;
+}
+.btn-danger:hover { background: rgba(239,68,68,.2); }
+
+/* ── Toast ──────────────────────────────────────────────────── */
+.toast-container {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  display: flex; flex-direction: column; gap: .5rem; z-index: 2000;
+}
+.toast {
+  padding: .75rem 1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: .85rem;
+  box-shadow: var(--shadow);
+  display: flex; align-items: center; gap: .6rem;
+  animation: slideIn .25s ease;
+  min-width: 260px;
+}
+.toast.success { border-color: rgba(34,197,94,.3); }
+.toast.error   { border-color: rgba(239,68,68,.3); }
+.toast.info    { border-color: rgba(99,102,241,.3); }
+@keyframes slideIn { from { transform: translateX(100%); opacity:0; } to { transform: none; opacity:1; } }
+
+/* ── Skeleton loader ─────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -500px 0; }
+  100% { background-position: 500px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
+}
+</style>
+</head>
+<body>
+
+<!-- ── Nav ─────────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-logo">⬡ PixelVault</div>
+
+  <div class="nav-quota">
+    <span id="quotaText">0 MB / 500 MB</span>
+    <div class="quota-bar"><div class="quota-fill" id="quotaFill" style="width:0%"></div></div>
+  </div>
+
+  <div class="nav-user">
+    <span style="color:var(--text-muted);font-size:.75rem">User:</span>
+    <input type="text" id="userId" value="demo-user" style="width:110px" placeholder="username" />
+  </div>
+</nav>
+
+<!-- ── Tabs ──────────────────────────────────────────────────────────── -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="upload">⬆ Upload</button>
+  <button class="tab-btn"       data-tab="gallery">🖼 Gallery</button>
+  <button class="tab-btn"       data-tab="trash">🗑 Trash</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ UPLOAD ═══ -->
+<div class="tab-panel active" id="tab-upload">
+  <div class="upload-layout">
+
+    <div>
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-zone-icon">🗂️</div>
+        <h2>Drop images here</h2>
+        <p>or click to browse — JPEG, PNG, GIF, WebP, BMP, TIFF</p>
+        <p style="margin-top:.5rem;font-size:.75rem;color:var(--text-muted)">Max 50 MB · uploads split into 1 MB chunks automatically</p>
+        <button class="btn-primary" onclick="document.getElementById('fileInput').click()">
+          📁 Browse Files
+        </button>
+        <input type="file" id="fileInput" class="drop-zone-input" multiple accept="image/*" />
+      </div>
+
+      <!-- Technical feature callouts -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1rem;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem">
+          <div style="font-size:.8rem;font-weight:700;margin-bottom:.3rem">🔒 Magic Byte Validation</div>
+          <div style="font-size:.72rem;color:var(--text-muted)">File headers verified — spoofed extensions are rejected before processing begins.</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem">
+          <div style="font-size:.8rem;font-weight:700;margin-bottom:.3rem">♻️ SHA-256 Deduplication</div>
+          <div style="font-size:.72rem;color:var(--text-muted)">Identical files share storage — only metadata is duplicated, never the bytes.</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem">
+          <div style="font-size:.8rem;font-weight:700;margin-bottom:.3rem">⚡ Chunked Uploads</div>
+          <div style="font-size:.72rem;color:var(--text-muted)">Files split into 1 MB chunks — drops resume where they left off.</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem">
+          <div style="font-size:.8rem;font-weight:700;margin-bottom:.3rem">🔗 Signed URLs</div>
+          <div style="font-size:.72rem;color:var(--text-muted)">Files served via HMAC-signed, time-limited URLs — no permanent public paths.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Queue sidebar -->
+    <div>
+      <div class="panel-header">
+        <span class="panel-title">Upload Queue</span>
+        <span class="badge" id="queueCount">0 files</span>
+      </div>
+      <div class="file-queue" id="fileQueue">
+        <div style="text-align:center;padding:2rem;color:var(--text-muted);font-size:.85rem">
+          No files selected yet
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ GALLERY ═══ -->
+<div class="tab-panel" id="tab-gallery">
+
+  <div class="gallery-toolbar">
+    <input type="text" id="searchInput" placeholder="🔍 Search by name, tag, color…" />
+    <select id="sortSelect">
+      <option value="newest">Newest first</option>
+      <option value="oldest">Oldest first</option>
+      <option value="largest">Largest first</option>
+      <option value="smallest">Smallest first</option>
+    </select>
+    <select id="orientFilter">
+      <option value="">All orientations</option>
+      <option value="portrait">Portrait</option>
+      <option value="landscape">Landscape</option>
+      <option value="square">Square</option>
+    </select>
+    <button class="btn-ghost" onclick="loadGallery()">↺ Refresh</button>
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="gallery-empty"><div class="icon">🖼️</div><p>No images yet — upload some!</p></div>
+  </div>
+
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TRASH ═══ -->
+<div class="tab-panel" id="tab-trash">
+  <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:1rem">
+    Files deleted within the last 30 days. Click to restore.
+  </p>
+  <div class="gallery-grid" id="trashGrid">
+    <div class="gallery-empty"><div class="icon">✅</div><p>Trash is empty</p></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ LIGHTBOX ═══ -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+
+  <div class="lightbox-img-wrap">
+    <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+  </div>
+
+  <div class="lightbox-sidebar" id="lightboxSidebar">
+    <div style="font-size:1rem;font-weight:700;margin-bottom:.25rem" id="lbName">—</div>
+
+    <div class="detail-label">Dimensions</div>
+    <div class="detail-value" id="lbDims">—</div>
+
+    <div class="detail-label">File size</div>
+    <div class="detail-value" id="lbSize">—</div>
+
+    <div class="detail-label">Format</div>
+    <div class="detail-value" id="lbMime">—</div>
+
+    <div class="detail-label">Uploaded</div>
+    <div class="detail-value" id="lbDate">—</div>
+
+    <div class="detail-label">Upload count (dedup)</div>
+    <div class="detail-value" id="lbDedup">—</div>
+
+    <div class="detail-label">Auto-tags</div>
+    <div class="gallery-tags" id="lbTags" style="margin-top:.3rem"></div>
+
+    <div class="detail-label">Colour palette</div>
+    <div class="palette-swatch" id="lbPalette"></div>
+
+    <div class="detail-label">SHA-256 hash</div>
+    <div class="detail-value" id="lbHash" style="font-family:monospace;font-size:.72rem"></div>
+
+    <div class="detail-label">Signed URL variants</div>
+    <div class="lb-actions" id="lbActions"></div>
+
+    <div style="margin-top:1rem">
+      <button class="btn-danger" id="lbDelete" onclick="deleteCurrentFile()" style="width:100%">🗑 Move to Trash</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toasts ───────────────────────────────────────────────────────── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// Constants
+// ══════════════════════════════════════════════════════
+const API        = '';
+const CHUNK_SIZE = 1 * 1024 * 1024; // 1 MB
+
+let currentPage    = 1;
+let lightboxFileId = null;
+let ws             = null;
+
+// ══════════════════════════════════════════════════════
+// WebSocket
+// ══════════════════════════════════════════════════════
+function connectWS() {
+  const wsUrl = `ws://${location.host}/ws`;
+  ws = new WebSocket(wsUrl);
+  ws.onclose = () => setTimeout(connectWS, 3000);
+  ws.onerror = () => {};
+}
+connectWS();
+
+function subscribeUpload(uploadId) {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify({ type: 'subscribe', uploadId }));
+  } else {
+    ws.addEventListener('open', () =>
+      ws.send(JSON.stringify({ type: 'subscribe', uploadId })),
+      { once: true }
+    );
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// Utils
+// ══════════════════════════════════════════════════════
+function formatBytes(bytes) {
+  if (bytes < 1024)        return bytes + ' B';
+  if (bytes < 1024 ** 2)   return (bytes / 1024).toFixed(1) + ' KB';
+  if (bytes < 1024 ** 3)   return (bytes / 1024 ** 2).toFixed(1) + ' MB';
+  return (bytes / 1024 ** 3).toFixed(2) + ' GB';
+}
+
+function userId() {
+  return document.getElementById('userId').value.trim() || 'anonymous';
+}
+
+function toast(msg, type = 'info', icon = '•') {
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span>${icon}</span><span>${msg}</span>`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), 4500);
+}
+
+// ══════════════════════════════════════════════════════
+// Tabs
+// ══════════════════════════════════════════════════════
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+    if (btn.dataset.tab === 'gallery') loadGallery();
+    if (btn.dataset.tab === 'trash')   loadTrash();
+  });
+});
+
+// ══════════════════════════════════════════════════════
+// Quota
+// ══════════════════════════════════════════════════════
+async function loadQuota() {
+  try {
+    const r = await fetch(`${API}/api/files/stats/quota?uploader=${userId()}`);
+    if (!r.ok) return;
+    const d = await r.json();
+    document.getElementById('quotaText').textContent = `${d.usedMB} MB / ${d.quotaMB} MB`;
+    document.getElementById('quotaFill').style.width = `${Math.min(d.percentUsed, 100)}%`;
+    document.getElementById('quotaFill').style.background =
+      d.percentUsed > 85 ? 'var(--error)' : d.percentUsed > 60 ? 'var(--warning)' : '';
+  } catch {}
+}
+loadQuota();
+
+// ══════════════════════════════════════════════════════
+// Drag & Drop
+// ══════════════════════════════════════════════════════
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('image/'));
+  if (files.length) queueFiles(files);
+});
+dropZone.addEventListener('click', e => {
+  if (e.target.tagName !== 'BUTTON') fileInput.click();
+});
+fileInput.addEventListener('change', () => {
+  const files = [...fileInput.files];
+  if (files.length) queueFiles(files);
+  fileInput.value = '';
+});
+
+// ══════════════════════════════════════════════════════
+// Upload Queue
+// ══════════════════════════════════════════════════════
+const queue    = []; // { file, id, status, progress, message }
+let uploading  = false;
+
+function queueFiles(files) {
+  for (const f of files) {
+    const id = crypto.randomUUID();
+    queue.push({ file: f, id, status: 'pending', progress: 0, message: '' });
+  }
+  renderQueue();
+  if (!uploading) processQueue();
+}
+
+function renderQueue() {
+  const el   = document.getElementById('fileQueue');
+  const count = document.getElementById('queueCount');
+  count.textContent = `${queue.length} file${queue.length !== 1 ? 's' : ''}`;
+
+  if (queue.length === 0) {
+    el.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-muted);font-size:.85rem">No files selected yet</div>';
+    return;
+  }
+
+  el.innerHTML = queue.map(item => {
+    const preview = item.previewUrl
+      ? `<img class="file-thumb" src="${item.previewUrl}" alt="" />`
+      : `<div class="file-thumb" style="display:flex;align-items:center;justify-content:center;font-size:1.4rem">🖼</div>`;
+
+    return `
+    <div class="file-card" id="card-${item.id}">
+      ${preview}
+      <div class="file-info">
+        <div class="file-name">${item.file.name}</div>
+        <div class="file-size">${formatBytes(item.file.size)}</div>
+        <span class="file-status status-${item.status}">${statusLabel(item.status)}</span>
+        ${item.status === 'uploading' || item.status === 'processing' ? `
+        <div class="progress-wrap">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width:${item.progress}%"></div>
+          </div>
+          <div class="progress-label">${item.message || ''}</div>
+        </div>` : ''}
+        ${item.status === 'done' ? `<div style="font-size:.7rem;color:var(--success);margin-top:.3rem">✓ Processed &amp; stored</div>` : ''}
+        ${item.status === 'duplicate' ? `<div style="font-size:.7rem;color:#f472b6;margin-top:.3rem">⟳ Deduplicated — file already exists</div>` : ''}
+        ${item.status === 'error' ? `<div style="font-size:.7rem;color:var(--error);margin-top:.3rem">✕ ${item.message}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function statusLabel(s) {
+  const map = { pending:'Queued', uploading:'Uploading…', processing:'Processing…', done:'Complete', duplicate:'Duplicate', error:'Error' };
+  return map[s] || s;
+}
+
+function updateItem(id, patch) {
+  const item = queue.find(q => q.id === id);
+  if (!item) return;
+  Object.assign(item, patch);
+  renderQueue();
+}
+
+// ── Generate live preview before upload ────────────────────────────────────
+async function generatePreview(item) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = e => { item.previewUrl = e.target.result; resolve(); };
+    reader.readAsDataURL(item.file);
+  });
+}
+
+async function processQueue() {
+  uploading = true;
+  for (const item of queue) {
+    if (item.status !== 'pending') continue;
+    await generatePreview(item);
+    updateItem(item.id, { status: 'uploading', progress: 0 });
+    await uploadFile(item);
+  }
+  uploading = false;
+  loadQuota();
+  loadGallery();
+}
+
+// ── Chunked upload ─────────────────────────────────────────────────────────
+async function uploadFile(item) {
+  try {
+    // 1. Init session
+    const initRes = await fetch(`${API}/api/upload/init`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-Id': userId(),
+      },
+      body: JSON.stringify({
+        fileName:    item.file.name,
+        mimeType:    item.file.type,
+        totalChunks: Math.ceil(item.file.size / CHUNK_SIZE),
+      }),
+    });
+
+    if (!initRes.ok) {
+      const err = await initRes.json();
+      throw new Error(err.error || 'Init failed');
+    }
+
+    const { uploadId } = await initRes.json();
+
+    // Subscribe to WS progress for this upload
+    subscribeUpload(uploadId);
+    ws && (ws.onmessage = (e) => {
+      try {
+        const ev = JSON.parse(e.data);
+        if (ev.uploadId !== uploadId) return;
+        if (ev.type === 'progress') {
+          updateItem(item.id, {
+            status:   ev.percent < 50 ? 'uploading' : 'processing',
+            progress: ev.percent,
+            message:  ev.message,
+          });
+        }
+      } catch {}
+    });
+
+    // 2. Upload chunks
+    const totalChunks = Math.ceil(item.file.size / CHUNK_SIZE);
+    for (let i = 0; i < totalChunks; i++) {
+      const chunk = item.file.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
+      const fd    = new FormData();
+      fd.append('uploadId',   uploadId);
+      fd.append('chunkIndex', String(i));
+      fd.append('chunk',      chunk, item.file.name);
+
+      const chunkRes = await fetch(`${API}/api/upload/chunk`, {
+        method: 'POST',
+        headers: { 'X-User-Id': userId() },
+        body: fd,
+      });
+      if (!chunkRes.ok) throw new Error('Chunk upload failed');
+
+      // Local progress for chunk phase (0–30%)
+      const localPct = Math.round(((i + 1) / totalChunks) * 30);
+      updateItem(item.id, { progress: localPct, message: `Uploading chunk ${i + 1}/${totalChunks}` });
+    }
+
+    // 3. Complete
+    updateItem(item.id, { status: 'processing', progress: 35, message: 'Assembling…' });
+    const completeRes = await fetch(`${API}/api/upload/complete`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-User-Id': userId(),
+      },
+      body: JSON.stringify({ uploadId }),
+    });
+
+    const result = await completeRes.json();
+
+    if (!completeRes.ok) throw new Error(result.error || 'Processing failed');
+
+    if (result.duplicate) {
+      updateItem(item.id, { status: 'duplicate', progress: 100, message: 'File already stored' });
+      toast(`"${item.file.name}" already exists — deduplicated`, 'info', '♻️');
+    } else {
+      updateItem(item.id, { status: 'done', progress: 100, message: '' });
+      toast(`"${item.file.name}" uploaded successfully`, 'success', '✓');
+    }
+  } catch (err) {
+    updateItem(item.id, { status: 'error', progress: 0, message: err.message });
+    toast(`Upload failed: ${err.message}`, 'error', '✕');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// Gallery
+// ══════════════════════════════════════════════════════
+async function loadGallery(page = 1) {
+  currentPage = page;
+  const q     = document.getElementById('searchInput')?.value || '';
+  const sort  = document.getElementById('sortSelect')?.value  || 'newest';
+  const orient= document.getElementById('orientFilter')?.value || '';
+
+  const params = new URLSearchParams({ page, limit: 24, sort });
+  if (q)      params.set('q', q);
+  if (orient) params.set('orientation', orient);
+
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = Array(8).fill('<div class="gallery-card"><div class="gallery-img-wrap skeleton" style="aspect-ratio:1"></div><div style="padding:.65rem .8rem"><div class="skeleton" style="height:14px;width:70%;margin-bottom:.4rem;border-radius:4px"></div><div class="skeleton" style="height:10px;width:40%;border-radius:4px"></div></div></div>').join('');
+
+  try {
+    const r = await fetch(`${API}/api/files?${params}`);
+    const d = await r.json();
+
+    if (!d.files || d.files.length === 0) {
+      grid.innerHTML = '<div class="gallery-empty"><div class="icon">🖼️</div><p>No images found</p></div>';
+      document.getElementById('pagination').innerHTML = '';
+      return;
+    }
+
+    grid.innerHTML = d.files.map(f => buildCard(f)).join('');
+    buildPagination(d.pages, page);
+  } catch (e) {
+    grid.innerHTML = `<div class="gallery-empty"><div class="icon">⚠️</div><p>Could not load gallery: ${e.message}</p></div>`;
+  }
+}
+
+function buildCard(f) {
+  const thumb  = f.thumbnailUrl
+    ? `<img class="gallery-img" src="${f.thumbnailUrl}" alt="${f.originalName}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=gallery-img-placeholder>🖼️</div>'" />`
+    : `<div class="gallery-img-placeholder">🖼️</div>`;
+
+  const tags   = (f.tags || []).slice(0, 3).map(t => `<span class="tag">${t}</span>`).join('');
+  const color  = f.colors?.dominant
+    ? `<span class="color-dot" style="background:${f.colors.dominant}" title="${f.colors.dominant}"></span>`
+    : '';
+
+  return `
+  <div class="gallery-card" onclick="openLightbox('${f.hash}')">
+    <div class="gallery-img-wrap">${thumb}</div>
+    <div class="gallery-meta">
+      <div class="gallery-name">${f.originalName}</div>
+      <div class="gallery-tags">${color}${tags}</div>
+      <div class="gallery-size">${formatBytes(f.size)} · ${f.dimensions?.width ?? '?'}×${f.dimensions?.height ?? '?'}</div>
+    </div>
+  </div>`;
+}
+
+function buildPagination(pages, current) {
+  const el = document.getElementById('pagination');
+  if (pages <= 1) { el.innerHTML = ''; return; }
+
+  let html = '';
+  if (current > 1) html += `<button class="page-btn" onclick="loadGallery(${current-1})">‹</button>`;
+  for (let i = 1; i <= pages; i++) {
+    if (i === 1 || i === pages || Math.abs(i - current) <= 2) {
+      html += `<button class="page-btn${i === current ? ' active' : ''}" onclick="loadGallery(${i})">${i}</button>`;
+    } else if (Math.abs(i - current) === 3) {
+      html += `<span style="color:var(--text-muted);padding:0 .25rem">…</span>`;
+    }
+  }
+  if (current < pages) html += `<button class="page-btn" onclick="loadGallery(${current+1})">›</button>`;
+  el.innerHTML = html;
+}
+
+document.getElementById('searchInput')?.addEventListener('input', debounce(() => loadGallery(), 350));
+document.getElementById('sortSelect')?.addEventListener('change', () => loadGallery());
+document.getElementById('orientFilter')?.addEventListener('change', () => loadGallery());
+
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+// ══════════════════════════════════════════════════════
+// Lightbox
+// ══════════════════════════════════════════════════════
+async function openLightbox(hash) {
+  lightboxFileId = hash;
+  const lb = document.getElementById('lightbox');
+  lb.classList.add('open');
+
+  try {
+    const r    = await fetch(`${API}/api/files/${hash}`);
+    const file = await r.json();
+
+    document.getElementById('lightboxImg').src  = file.signedUrls?.medium || '';
+    document.getElementById('lbName').textContent = file.originalName;
+    document.getElementById('lbDims').textContent  = file.dimensions
+      ? `${file.dimensions.width} × ${file.dimensions.height} px (${file.orientation || ''})`
+      : '—';
+    document.getElementById('lbSize').textContent  = formatBytes(file.size);
+    document.getElementById('lbMime').textContent  = file.mimeType;
+    document.getElementById('lbDate').textContent  = new Date(file.createdAt).toLocaleString();
+    document.getElementById('lbDedup').textContent = `Uploaded ${file.uploadCount || 1}× (deduplicated)`;
+    document.getElementById('lbHash').textContent  = file.hash;
+
+    // Tags
+    document.getElementById('lbTags').innerHTML =
+      (file.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+
+    // Palette
+    const palette = [file.colors?.dominant, ...(file.colors?.palette || [])].filter(Boolean);
+    document.getElementById('lbPalette').innerHTML =
+      palette.map(c => `<div class="swatch" style="background:${c}" title="${c}"></div>`).join('');
+
+    // Signed URL actions
+    document.getElementById('lbActions').innerHTML = [
+      ['thumbnail', 'Thumbnail (200px)'],
+      ['medium',    'Medium (800px)'],
+      ['full',      'Full size (WebP)'],
+      ['original',  'Original file'],
+    ].map(([size, label]) =>
+      `<button class="btn-ghost" onclick="copySignedUrl('${hash}','${size}')">
+        🔗 Copy ${label} URL
+       </button>`
+    ).join('');
+  } catch (e) {
+    toast('Could not load file details', 'error', '✕');
+  }
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lightboxImg').src = '';
+  lightboxFileId = null;
+}
+
+document.getElementById('lightbox').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeLightbox();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+async function copySignedUrl(hash, size) {
+  try {
+    const r   = await fetch(`${API}/api/files/${hash}/signed-url?size=${size}`);
+    const { url } = await r.json();
+    await navigator.clipboard.writeText(url);
+    toast(`Signed URL copied (expires in 1h)`, 'success', '✓');
+  } catch {
+    toast('Failed to copy URL', 'error', '✕');
+  }
+}
+
+async function deleteCurrentFile() {
+  if (!lightboxFileId) return;
+  if (!confirm('Move this file to trash?')) return;
+
+  const r = await fetch(`${API}/api/files/${lightboxFileId}`, { method: 'DELETE' });
+  if (r.ok) {
+    toast('File moved to trash', 'info', '🗑');
+    closeLightbox();
+    loadGallery(currentPage);
+    loadQuota();
+  } else {
+    toast('Delete failed', 'error', '✕');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// Trash
+// ══════════════════════════════════════════════════════
+async function loadTrash() {
+  const grid = document.getElementById('trashGrid');
+  try {
+    const r = await fetch(`${API}/api/files/trash/list`, {
+      headers: { 'X-User-Id': userId() },
+    });
+    const { files } = await r.json();
+
+    if (!files || files.length === 0) {
+      grid.innerHTML = '<div class="gallery-empty"><div class="icon">✅</div><p>Trash is empty</p></div>';
+      return;
+    }
+
+    grid.innerHTML = files.map(f => `
+      <div class="gallery-card">
+        <div class="gallery-img-wrap">
+          <div class="gallery-img-placeholder">🗑️</div>
+        </div>
+        <div class="gallery-meta">
+          <div class="gallery-name">${f.originalName}</div>
+          <div class="gallery-size">${formatBytes(f.size)}</div>
+          <div class="gallery-tags" style="margin-top:.5rem">
+            <button class="btn-ghost" style="font-size:.72rem" onclick="restoreFile('${f.hash}')">↩ Restore</button>
+          </div>
+        </div>
+      </div>`).join('');
+  } catch (e) {
+    grid.innerHTML = `<div class="gallery-empty"><div class="icon">⚠️</div><p>${e.message}</p></div>`;
+  }
+}
+
+async function restoreFile(hash) {
+  const r = await fetch(`${API}/api/files/${hash}/restore`, { method: 'POST' });
+  if (r.ok) {
+    toast('File restored', 'success', '↩');
+    loadTrash();
+    loadQuota();
+  } else {
+    toast('Restore failed', 'error', '✕');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// Initial load
+// ══════════════════════════════════════════════════════
+document.getElementById('userId').addEventListener('change', loadQuota);
+</script>
+</body>
+</html>

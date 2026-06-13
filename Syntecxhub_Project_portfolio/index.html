@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Umuthan Çakır — Cybersecurity Expert, Penetration Tester, MSc Cyber Security Student at University of Kent" />
+  <title>Umuthan Çakır | Cybersecurity Expert</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║  NAVIGATION                 ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#hero">
+        <span class="p-user">uc</span><span class="p-at">@</span><span class="p-host">portfolio</span><span class="p-sep">:~$</span><span class="p-cur">▋</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#certifications">Certs</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║  HERO                       ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section id="hero">
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="hero-inner">
+      <!-- Photo -->
+      <div class="hero-photo">
+        <div class="hex-wrap">
+          <div class="hex-frame" id="hex-frame">
+            <img src="assets/photo.jpg" alt="Umuthan Çakır" id="hero-img" draggable="false" />
+            <div class="photo-ph"><i class="fa-solid fa-user-secret"></i></div>
+          </div>
+        </div>
+        <div class="hero-badges">
+          <span class="hbadge"><i class="fa-solid fa-shield-halved"></i> Red Teamer</span>
+          <span class="hbadge"><i class="fa-solid fa-magnifying-glass"></i> Forensics</span>
+          <span class="hbadge"><i class="fa-solid fa-wifi"></i> RF/Wireless</span>
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="hero-text">
+        <div class="hero-cmd"><span class="dollar">$</span> whoami</div>
+        <h1 class="hero-name">UMUTHAN<br /><span class="red">ÇAKIR</span></h1>
+        <div class="hero-role">
+          <span class="cmt">// </span><span id="typing-text"></span><span class="blink">█</span>
+        </div>
+        <p class="hero-tag">Red Teamer &nbsp;·&nbsp; AI-Driven Threat Detection &nbsp;·&nbsp; Ethical Hacker</p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary"><i class="fa-solid fa-terminal"></i> View Projects</a>
+          <a href="#contact"  class="btn btn-outline"><i class="fa-solid fa-paper-plane"></i> Get In Touch</a>
+        </div>
+      </div>
+    </div>
+
+    <a href="#about" class="scroll-down" aria-label="Scroll down">
+      <span>scroll</span>
+      <i class="fa-solid fa-chevron-down"></i>
+    </a>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║  ABOUT                      ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">About Me</h2>
+      <div class="about-grid">
+
+        <div class="about-bio fade-in">
+          <p>I'm a <strong>Cybersecurity Expert</strong> and <strong>MSc Cyber Security student at the University of Kent, London</strong>, with deep hands-on experience in penetration testing, digital forensics, and AI-driven threat detection.</p>
+          <p>My background spans real-world red team operations, government-backed cybersecurity projects with GES/TÜBİTAK, and PLM-IT management at an EV manufacturing facility. I design and execute end-to-end attack simulations — from USB payload delivery and wireless hijacking to RF spoofing and rogue access points — using both commercial tools and custom-built hardware.</p>
+          <p>Passionate about the intersection of <strong>AI and offensive security</strong>, particularly automating threat detection workflows and building frameworks that cut assessment time without sacrificing depth.</p>
+          <div class="about-links">
+            <a href="mailto:umuthancakir6@gmail.com" class="alink"><i class="fa-solid fa-envelope"></i> umuthancakir6@gmail.com</a>
+            <a href="#" class="alink"><i class="fa-brands fa-linkedin"></i> linkedin.com/in/umuthancakir</a>
+            <a href="#" class="alink"><i class="fa-brands fa-github"></i> github.com/umuthancakir</a>
+            <a href="#" class="alink"><i class="fa-solid fa-location-dot"></i> London, United Kingdom</a>
+          </div>
+        </div>
+
+        <div class="about-stats fade-in">
+          <div class="stat-card">
+            <div class="stat-val" data-target="70" data-suffix="%+">0%</div>
+            <div class="stat-lbl">Intrusion Success Rate</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" data-target="40" data-suffix="%">0%</div>
+            <div class="stat-lbl">Reduced Test Time</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" data-target="85" data-suffix="/100">0</div>
+            <div class="stat-lbl">OWASP ASVS Score</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" data-target="3" data-suffix="">0</div>
+            <div class="stat-lbl">Gov-Backed Projects</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" data-target="200" data-suffix="+">0</div>
+            <div class="stat-lbl">Security Learners Trained</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" data-target="5" data-suffix="">0</div>
+            <div class="stat-lbl">Certifications</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║  SKILLS                     ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section id="skills" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title fade-in">Skills</h2>
+      <div class="skills-grid">
+
+        <div class="skill-group fade-in">
+          <div class="sg-head"><i class="fa-solid fa-crosshairs"></i><h3>Technical</h3></div>
+          <div class="skill-tags">
+            <span>Penetration Testing</span><span>Digital Forensics</span>
+            <span>Ethical Hacking</span><span>Malware Analysis</span>
+            <span>Red Teaming</span><span>Threat Modelling</span>
+          </div>
+          <div class="skill-bars">
+            <div class="sb-row"><span>Penetration Testing</span>
+              <div class="sbar"><div class="sfill" data-w="92"></div></div></div>
+            <div class="sb-row"><span>Digital Forensics</span>
+              <div class="sbar"><div class="sfill" data-w="86"></div></div></div>
+            <div class="sb-row"><span>Malware Analysis</span>
+              <div class="sbar"><div class="sfill" data-w="79"></div></div></div>
+          </div>
+        </div>
+
+        <div class="skill-group fade-in">
+          <div class="sg-head"><i class="fa-solid fa-code"></i><h3>Programming</h3></div>
+          <div class="skill-tags">
+            <span>Python</span><span>C++</span><span>Java</span>
+            <span>JavaScript</span><span>Arduino</span><span>CSS</span>
+          </div>
+          <div class="skill-bars">
+            <div class="sb-row"><span>Python</span>
+              <div class="sbar"><div class="sfill" data-w="91"></div></div></div>
+            <div class="sb-row"><span>C++</span>
+              <div class="sbar"><div class="sfill" data-w="76"></div></div></div>
+            <div class="sb-row"><span>Java / JS</span>
+              <div class="sbar"><div class="sfill" data-w="70"></div></div></div>
+          </div>
+        </div>
+
+        <div class="skill-group fade-in">
+          <div class="sg-head"><i class="fa-solid fa-microchip"></i><h3>Hardware &amp; Tools</h3></div>
+          <div class="skill-tags">
+            <span>WiFi Pineapple</span><span>Flipper Zero</span>
+            <span>Shark Jack</span><span>ESP32</span>
+            <span>BadUSB</span><span>OMG Cable</span>
+          </div>
+          <div class="skill-bars">
+            <div class="sb-row"><span>WiFi / RF Tools</span>
+              <div class="sbar"><div class="sfill" data-w="89"></div></div></div>
+            <div class="sb-row"><span>RF Spoofing Devices</span>
+              <div class="sbar"><div class="sfill" data-w="83"></div></div></div>
+            <div class="sb-row"><span>Embedded / HW Hacking</span>
+              <div class="sbar"><div class="sfill" data-w="77"></div></div></div>
+          </div>
+        </div>
+
+        <div class="skill-group fade-in">
+          <div class="sg-head"><i class="fa-solid fa-file-shield"></i><h3>Frameworks</h3></div>
+          <div class="skill-tags">
+            <span>ISO 27001</span><span>OWASP ASVS</span><span>NIST</span>
+            <span>Nessus</span><span>OpenVAS</span><span>MITRE ATT&amp;CK</span>
+          </div>
+          <div class="skill-bars">
+            <div class="sb-row"><span>OWASP ASVS</span>
+              <div class="sbar"><div class="sfill" data-w="85"></div></div></div>
+            <div class="sb-row"><span>ISO 27001</span>
+              <div class="sbar"><div class="sfill" data-w="80"></div></div></div>
+            <div class="sb-row"><span>NIST / MITRE</span>
+              <div class="sbar"><div class="sfill" data-w="74"></div></div></div>
+          </div>
+        </div>
+
+        <div class="skill-group fade-in skill-group-wide">
+          <div class="sg-head"><i class="fa-solid fa-users"></i><h3>Soft Skills</h3></div>
+          <div class="skill-tags">
+            <span>Problem-solving</span><span>Strategic Thinking</span>
+            <span>Leadership</span><span>Communication</span>
+            <span>Adaptability</span><span>Mentorship</span>
+            <span>CTF Organisation</span><span>Security Awareness</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║  EXPERIENCE                 ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section id="experience" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Experience</h2>
+      <div class="timeline">
+
+        <div class="tl-item tl-left fade-in">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-head">
+              <span class="tl-co">KMCS3</span>
+              <span class="tl-dt">Nov 2025 – Present</span>
+            </div>
+            <h3 class="tl-role">Vice President of Ethical Hacking</h3>
+            <ul class="tl-bullets">
+              <li>Lead ethical hacking division and oversee team of security researchers</li>
+              <li>Organise CTF competitions and hands-on security workshops</li>
+              <li>Drive research into emerging attack vectors and defensive countermeasures</li>
+            </ul>
+            <div class="tl-tags"><span>CTF</span><span>Red Team</span><span>Leadership</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-right fade-in">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-head">
+              <span class="tl-co">GES / TÜBİTAK</span>
+              <span class="tl-dt">Sept 2022 – July 2024</span>
+            </div>
+            <h3 class="tl-role">Cyber Security Expert &amp; Penetration Tester</h3>
+            <ul class="tl-bullets">
+              <li>Executed penetration tests across 3 government-backed infrastructure projects</li>
+              <li>Raised OWASP ASVS compliance score from 52 to 85/100 through systematic hardening</li>
+              <li>Built custom attack frameworks reducing test cycle time by 40%</li>
+            </ul>
+            <div class="tl-tags"><span>Gov Projects</span><span>OWASP</span><span>Python</span></div>
+          </div>
+        </div>
+
+        <div class="tl-item tl-left fade-in">
+          <div class="tl-dot"></div>
+          <div class="tl-card">
+            <div class="tl-head">
+              <span class="tl-co">GÜNSEL EV Factory</span>
+              <span class="tl-dt">May 2022 – Aug 2024</span>
+            </div>
+            <h3 class="tl-role">PLM-IT Manager</h3>
+            <ul class="tl-bullets">
+              <li>Managed PLM infrastructure security across EV production systems</li>
+              <li>Implemented ISO 27001-aligned security policies organisation-wide</li>
+              <li>Mentored 3 security interns — 2 converted to full-time positions</li>
+            </ul>
+            <div class="tl-tags"><span>ISO 27001</span><span>PLM</span><span>EV Industry</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║  PROJECTS                   ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section id="projects" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title fade-in">Projects</h2>
+      <div class="proj-card fade-in">
+        <div class="proj-editor">
+
+          <div class="editor-bar">
+            <div class="editor-dots">
+              <span class="dot dot-r"></span>
+              <span class="dot dot-y"></span>
+              <span class="dot dot-g"></span>
+            </div>
+            <span class="editor-file">ai-cybersec-automation-system.py</span>
+            <span class="editor-status"><i class="fa-solid fa-circle" style="color:#20bf6b;font-size:0.6rem"></i> active</span>
+          </div>
+
+          <div class="editor-body">
+            <div class="proj-meta">
+              <h3 class="proj-title">AI-Integrated Cybersecurity Automation System</h3>
+              <p class="proj-desc">
+                An end-to-end offensive security framework combining AI-driven automation with custom hardware attack vectors. Simulates real-world attack chains from initial access to lateral movement, with AI-assisted result analysis and automated report generation.
+              </p>
+              <div class="proj-stacks">
+                <div class="pstack">
+                  <span class="pstack-lbl">Software</span>
+                  <div class="ptags">
+                    <span>Python</span><span>C++</span><span>JavaScript</span><span>Java</span><span>CSS</span><span>Arduino</span>
+                  </div>
+                </div>
+                <div class="pstack">
+                  <span class="pstack-lbl">Hardware</span>
+                  <div class="ptags">
+                    <span>BadUSB</span><span>OMG Cable</span><span>WiFi Pineapple</span><span>Flipper Zero</span><span>ESP32</span><span>Shark Jack</span>
+                  </div>
+                </div>
+                <div class="pstack">
+                  <span class="pstack-lbl">Attack Vectors</span>
+                  <div class="ptags">
+                    <span>USB Exploits</span><span>Wireless Hijacking</span><span>Rogue APs</span><span>VLAN Hopping</span><span>RF Spoofing</span><span>Phishing Portals</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="proj-metrics">
+              <h4 class="metrics-title"><i class="fa-solid fa-chart-line"></i> Measured Results</h4>
+              <div class="metrics-grid">
+                <div class="metric">
+                  <div class="mval">≥70%</div>
+                  <div class="mlbl">Intrusion Success Rate</div>
+                </div>
+                <div class="metric">
+                  <div class="mval">100%</div>
+                  <div class="mlbl">USB Payload Execution</div>
+                </div>
+                <div class="metric">
+                  <div class="mval">&lt;2 min</div>
+                  <div class="mlbl">WPA/WPA2 Handshake</div>
+                </div>
+                <div class="metric">
+                  <div class="mval">40%</div>
+                  <div class="mlbl">Reduced Test Time</div>
+                </div>
+                <div class="metric mval-wide">
+                  <div class="mval">52 → 85</div>
+                  <div class="mlbl">OWASP ASVS Score</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║  CERTIFICATIONS             ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section id="certifications" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Certifications</h2>
+      <p class="section-sub fade-in">Ankara Bilim University / IEEC — ISO 9001:2015 Accredited</p>
+      <div class="certs-row">
+        <div class="cert-card fade-in">
+          <div class="cert-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="cert-name">Cyber Security Expertise</div>
+          <div class="cert-iss">Ankara Bilim University / IEEC</div>
+          <div class="cert-badge">ISO 9001:2015</div>
+        </div>
+        <div class="cert-card fade-in">
+          <div class="cert-icon"><i class="fa-solid fa-gavel"></i></div>
+          <div class="cert-name">Cyber Crimes Expertise</div>
+          <div class="cert-iss">Ankara Bilim University / IEEC</div>
+          <div class="cert-badge">ISO 9001:2015</div>
+        </div>
+        <div class="cert-card fade-in">
+          <div class="cert-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+          <div class="cert-name">Forensic Computer Expertise</div>
+          <div class="cert-iss">Ankara Bilim University / IEEC</div>
+          <div class="cert-badge">ISO 9001:2015</div>
+        </div>
+        <div class="cert-card fade-in">
+          <div class="cert-icon"><i class="fa-solid fa-user-ninja"></i></div>
+          <div class="cert-name">Ethical Hacker Expertise</div>
+          <div class="cert-iss">Ankara Bilim University / IEEC</div>
+          <div class="cert-badge">ISO 9001:2015</div>
+        </div>
+        <div class="cert-card fade-in">
+          <div class="cert-icon"><i class="fa-solid fa-bug-slash"></i></div>
+          <div class="cert-name">Penetration Test Specialization</div>
+          <div class="cert-iss">Ankara Bilim University / IEEC</div>
+          <div class="cert-badge">ISO 9001:2015</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║  LEADERSHIP                 ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section id="leadership" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title fade-in">Leadership &amp; Community</h2>
+      <div class="lead-grid">
+        <div class="lead-card fade-in">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <h3>Intern Mentorship</h3>
+          <p>Mentored 3 security interns at GÜNSEL EV Factory — 2 converted to full-time roles, demonstrating measurable impact through hands-on, practical teaching.</p>
+        </div>
+        <div class="lead-card fade-in">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <h3>Security Awareness Training</h3>
+          <p>Designed and delivered security awareness curriculum to 200+ learners across enterprise and academic settings in Turkey and Cyprus.</p>
+        </div>
+        <div class="lead-card fade-in">
+          <i class="fa-solid fa-flag"></i>
+          <h3>CTF Organisation</h3>
+          <p>Organised Capture The Flag competitions as VP of Ethical Hacking at KMCS3, fostering competitive learning environments for the next generation of security professionals.</p>
+        </div>
+        <div class="lead-card fade-in">
+          <i class="fa-solid fa-hand-holding-heart"></i>
+          <h3>NGO Volunteer Work</h3>
+          <p>Active volunteer contributor across NGO initiatives in Turkey and Cyprus, applying technology skills to community cyber-resilience and social good programmes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║  CONTACT                    ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2 class="section-title fade-in">Get In Touch</h2>
+      <p class="section-sub fade-in">Open to security consultancy, research collaboration, and full-time roles in offensive security or AI-driven threat detection.</p>
+      <div class="contact-grid">
+
+        <div class="contact-info fade-in">
+          <a href="mailto:umuthancakir6@gmail.com" class="citem">
+            <div class="cicon"><i class="fa-solid fa-envelope"></i></div>
+            <div><div class="clbl">Email</div><div class="cval">umuthancakir6@gmail.com</div></div>
+          </a>
+          <a href="#" class="citem">
+            <div class="cicon"><i class="fa-brands fa-linkedin"></i></div>
+            <div><div class="clbl">LinkedIn</div><div class="cval">linkedin.com/in/umuthancakir</div></div>
+          </a>
+          <a href="#" class="citem">
+            <div class="cicon"><i class="fa-brands fa-github"></i></div>
+            <div><div class="clbl">GitHub</div><div class="cval">github.com/umuthancakir</div></div>
+          </a>
+          <div class="citem no-hover">
+            <div class="cicon"><i class="fa-solid fa-location-dot"></i></div>
+            <div><div class="clbl">Location</div><div class="cval">London, United Kingdom</div></div>
+          </div>
+        </div>
+
+        <form class="contact-form fade-in" onsubmit="handleForm(event)">
+          <div class="fgroup">
+            <label for="fname">Name</label>
+            <input type="text" id="fname" placeholder="Your name" autocomplete="name" />
+          </div>
+          <div class="fgroup">
+            <label for="femail">Email</label>
+            <input type="email" id="femail" placeholder="your@email.com" autocomplete="email" />
+          </div>
+          <div class="fgroup">
+            <label for="fmsg">Message</label>
+            <textarea id="fmsg" rows="5" placeholder="What's on your mind?"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            <i class="fa-solid fa-paper-plane"></i> Send Message
+          </button>
+          <div id="form-feedback" class="form-feedback" aria-live="polite"></div>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║  FOOTER                     ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="p-user">uc</span><span class="p-at">@</span><span class="p-host">portfolio</span><span class="p-sep">:~$</span>&nbsp;<span class="blink">█</span>
+        </div>
+        <p class="footer-copy">Built by <strong>Umuthan Çakır</strong> &nbsp;·&nbsp; Cybersecurity Portfolio &nbsp;·&nbsp; 2025</p>
+        <div class="footer-links">
+          <a href="mailto:umuthancakir6@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
