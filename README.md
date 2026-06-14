@@ -1,4 +1,4 @@
-# Syntec Internship — Week 1 Projects
+# Developing Projects
 
 A collection of nine projects built during Week 1, ranging from Python CLI tools
 and Streamlit web apps to a Node.js backend service and a full Android application.
